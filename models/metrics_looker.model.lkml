@@ -1,15 +1,15 @@
 connection: "duplicate_test_appomni"
 
 include: "/views/**/*.view.lkml"
-include: "/dashboards/metrics_dashboard.dashboard.lookml"
-include: "/dashboards/metrics_insights_dashboard.dashboard.lookml"
-include: "/dashboards/metrics_policies_dashboard.dashboard.lookml"
+include: "/dashboards/looker_dashboard.dashboard.lookml"
+# include: "/dashboards/metrics_insights_dashboard.dashboard.lookml"
+# include: "/dashboards/metrics_policies_dashboard.dashboard.lookml"
 
-datagroup: success_metrics_looker_default_datagroup {
+datagroup: metrics_looker_default_datagroup {
   max_cache_age: "1 hour"
 }
 week_start_day: sunday
-persist_with: success_metrics_looker_default_datagroup
+persist_with: metrics_looker_default_datagroup
 
 explore: environment_tag {
   sql_always_where: {% if _user_attributes['appomni_env_restricted'] == "True" %}

@@ -30,7 +30,7 @@ view: insight_occurrence_metric {
     sql: ${TABLE}."insight_last_opened" ;;
   }
   dimension: insight_mttr {
-    type: string
+    type: number
     sql: ${TABLE}."insight_mttr" ;;
   }
   dimension: insight_open {
@@ -55,7 +55,7 @@ view: insight_occurrence_metric {
     sql: ${TABLE}."monitored_service_type" ;;
   }
   dimension: occurrence_mttr {
-    type: string
+    type: number
     sql: ${TABLE}."occurrence_mttr" ;;
   }
   dimension: occurrence_open {
@@ -115,7 +115,10 @@ view: insight_occurrence_metric {
         sql: ${TABLE}."risk_score" = 0 ;;
         label: "Informational"
       }
-      else: "Unknown"
+      when: {
+        sql: ${TABLE}."risk_score" IS NULL OR ${TABLE}."risk_score" < 0 OR ${TABLE}."risk_score" > 100;;
+        label: "Unknown"
+      }
     }
   }
   dimension: risk_level {
@@ -140,7 +143,10 @@ view: insight_occurrence_metric {
         sql: ${TABLE}."risk_score" = 0 ;;
         label: "Informational"
       }
-      else: "Unknown"
+      when: {
+        sql: ${TABLE}."risk_score" IS NULL OR ${TABLE}."risk_score" < 0 OR ${TABLE}."risk_score" > 100;;
+        label: "Unknown"
+      }
     }
   }
   dimension: status {

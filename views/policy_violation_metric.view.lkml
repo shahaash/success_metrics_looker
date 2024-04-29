@@ -57,7 +57,7 @@ view: policy_violation_metric {
     sql: ${TABLE}."policy_last_opened" ;;
   }
   dimension: policy_mttr {
-    type: string
+    type: number
     sql: ${TABLE}."policy_mttr" ;;
   }
   dimension: policy_open {
@@ -102,7 +102,10 @@ view: policy_violation_metric {
         sql: ${TABLE}."risk_score" = 0 ;;
         label: "Informational"
       }
-      else: "Unknown"
+      when: {
+        sql: ${TABLE}."risk_score" IS NULL OR ${TABLE}."risk_score" < 0 OR ${TABLE}."risk_score" > 100;;
+        label: "Unknown"
+      }
     }
   }
   dimension: risk_level {
@@ -127,7 +130,10 @@ view: policy_violation_metric {
         sql: ${TABLE}."risk_score" = 0 ;;
         label: "Informational"
       }
-      else: "Unknown"
+      when: {
+        sql: ${TABLE}."risk_score" IS NULL OR ${TABLE}."risk_score" < 0 OR ${TABLE}."risk_score" > 100;;
+        label: "Unknown"
+      }
     }
   }
   dimension: rule_id {
@@ -159,7 +165,7 @@ view: policy_violation_metric {
     sql: ${TABLE}."tenant_key" ;;
   }
   dimension: violation_mttr {
-    type: string
+    type: number
     sql: ${TABLE}."violation_mttr" ;;
   }
   dimension: violation_open {
