@@ -2,8 +2,8 @@ connection: "duplicate_test_appomni"
 
 include: "/views/**/*.view.lkml"
 include: "/dashboards/looker_dashboard.dashboard.lookml"
-# include: "/dashboards/metrics_insights_dashboard.dashboard.lookml"
-# include: "/dashboards/metrics_policies_dashboard.dashboard.lookml"
+include: "/dashboards/looker_insights_dashboard.dashboard.lookml"
+include: "/dashboards/looker_policies_dashboard.dashboard.lookml"
 
 datagroup: metrics_looker_default_datagroup {
   max_cache_age: "1 hour"
