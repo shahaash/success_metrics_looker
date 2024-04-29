@@ -234,10 +234,47 @@
     model: metrics_looker
     explore: policy_violation_metric
     type: looker_line
-    fields: [policy_violation_metric.policy_mttr, policy_violation_metric.policy_period_date]
+    fields: [policy_violation_metric.policy_period_date, total_policy_mttr_calculation,
+      sum_of_policy_resolved, policy_violation_metric.policy_resolved]
+    filters:
+      policy_violation_metric.policy_resolved: ">0"
     sorts: [policy_violation_metric.policy_period_date desc]
     limit: 500
     column_limit: 50
+    dynamic_fields:
+    - category: dimension
+      expression: "${policy_violation_metric.policy_mttr} * ${policy_violation_metric.policy_resolved}"
+      label: Policy MTTR Calculation
+      value_format:
+      value_format_name:
+      dimension: policy_mttr_calculation
+      _kind_hint: dimension
+      _type_hint: number
+    - category: measure
+      expression:
+      label: Total Policy MTTR Calculation
+      value_format:
+      value_format_name:
+      based_on: policy_mttr_calculation
+      _kind_hint: measure
+      measure: total_policy_mttr_calculation
+      type: sum
+      _type_hint: number
+    - measure: sum_of_policy_resolved
+      based_on: policy_violation_metric.policy_resolved
+      expression: ''
+      label: Sum of Policy Resolved
+      type: sum
+      _kind_hint: measure
+      _type_hint: number
+    - category: table_calculation
+      expression: "${total_policy_mttr_calculation}/${sum_of_policy_resolved}"
+      label: Policy MTTR
+      value_format:
+      value_format_name: decimal_2
+      _kind_hint: measure
+      table_calculation: policy_mttr
+      _type_hint: number
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -268,6 +305,8 @@
     trend_lines: [{color: "#b8b8b8", label_position: right, order: 3, period: 7, regression_type: linear,
         series_index: 1, show_label: false}]
     defaults_version: 1
+    hidden_fields: [policy_violation_metric.policy_resolved, total_policy_mttr_calculation,
+      sum_of_policy_resolved]
     listen:
       Policy Name: policy.name
       Monitored Service: monitored_service.name
@@ -465,7 +504,7 @@
       _kind_hint: measure
       table_calculation: count
       _type_hint: number
-      hidden_fields: [insight_occurrence_metric.count]
+    hidden_fields: [insight_occurrence_metric.count]
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -535,10 +574,47 @@
     model: metrics_looker
     explore: insight_occurrence_metric
     type: looker_line
-    fields: [insight_occurrence_metric.insight_mttr, insight_occurrence_metric.insight_period_date]
+    fields: [insight_occurrence_metric.insight_period_date, total_insight_mttr_calculation,
+      sum_of_insight_resolved, insight_occurrence_metric.insight_resolved]
+    filters:
+      insight_occurrence_metric.insight_resolved: ">0"
     sorts: [insight_occurrence_metric.insight_period_date desc]
     limit: 500
     column_limit: 50
+    dynamic_fields:
+    - category: dimension
+      expression: "${insight_occurrence_metric.insight_mttr} * ${insight_occurrence_metric.insight_resolved}"
+      label: Insight MTTR Calculation
+      value_format:
+      value_format_name:
+      dimension: insight_mttr_calculation
+      _kind_hint: dimension
+      _type_hint: number
+    - category: measure
+      expression:
+      label: Total Insight MTTR Calculation
+      value_format:
+      value_format_name:
+      based_on: insight_mttr_calculation
+      _kind_hint: measure
+      measure: total_insight_mttr_calculation
+      type: sum
+      _type_hint: number
+    - measure: sum_of_insight_resolved
+      based_on: insight_occurrence_metric.insight_resolved
+      expression: ''
+      label: Sum of Insight Resolved
+      type: sum
+      _kind_hint: measure
+      _type_hint: number
+    - category: table_calculation
+      expression: "${total_insight_mttr_calculation}/${sum_of_insight_resolved}"
+      label: Insight MTTR
+      value_format:
+      value_format_name: decimal_2
+      _kind_hint: measure
+      table_calculation: insight_mttr
+      _type_hint: number
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -569,6 +645,8 @@
     trend_lines: [{color: "#b8b8b8", label_position: right, order: 3, period: 7, regression_type: linear,
         series_index: 1, show_label: false}]
     defaults_version: 1
+    hidden_fields: [insight_occurrence_metric.insight_resolved, total_insight_mttr_calculation,
+      sum_of_insight_resolved]
     listen:
       Monitored Service: monitored_service.name
       Environment: environment_tag.name
@@ -850,10 +928,47 @@
     model: metrics_looker
     explore: insight_occurrence_metric
     type: looker_line
-    fields: [insight_occurrence_metric.insight_period_date, insight_occurrence_metric.occurrence_mttr]
+    fields: [insight_occurrence_metric.insight_period_date, total_occurrence_mttr_calculation,
+      sum_of_occurrence_resolved, insight_occurrence_metric.occurrence_resolved]
+    filters:
+      insight_occurrence_metric.occurrence_resolved: ">0"
     sorts: [insight_occurrence_metric.insight_period_date desc]
     limit: 500
     column_limit: 50
+    dynamic_fields:
+    - category: dimension
+      expression: "${insight_occurrence_metric.occurrence_mttr} *  ${insight_occurrence_metric.occurrence_resolved}"
+      label: Occurrence MTTR Calculation
+      value_format:
+      value_format_name:
+      dimension: occurrence_mttr_calculation
+      _kind_hint: dimension
+      _type_hint: number
+    - category: measure
+      expression:
+      label: Total Occurrence MTTR Calculation
+      value_format:
+      value_format_name:
+      based_on: occurrence_mttr_calculation
+      _kind_hint: measure
+      measure: total_occurrence_mttr_calculation
+      type: sum
+      _type_hint: number
+    - measure: sum_of_occurrence_resolved
+      based_on: insight_occurrence_metric.occurrence_resolved
+      expression: ''
+      label: Sum of Occurrence Resolved
+      type: sum
+      _kind_hint: measure
+      _type_hint: number
+    - category: table_calculation
+      expression: "${total_occurrence_mttr_calculation}/${sum_of_occurrence_resolved}"
+      label: 'Occurrence MTTR '
+      value_format:
+      value_format_name: decimal_2
+      _kind_hint: measure
+      table_calculation: occurrence_mttr
+      _type_hint: number
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -878,7 +993,13 @@
     y_axis_combined: true
     show_null_points: true
     interpolation: linear
+    x_axis_zoom: true
+    y_axis_zoom: true
+    trend_lines: [{color: "#b8b8b8", label_position: right, order: 3, period: 7, regression_type: linear,
+        series_index: 1, show_label: false}]
     defaults_version: 1
+    hidden_fields: [insight_occurrence_metric.occurrence_resolved, total_occurrence_mttr_calculation,
+      sum_of_occurrence_resolved]
     listen:
       Monitored Service: monitored_service.name
       Environment: environment_tag.name
