@@ -298,7 +298,7 @@
       _type_hint: number
     - category: table_calculation
       expression: "${total_insight_mttr_calculation}/${sum_of_insight_resolved}"
-      label: Insight MTTR
+      label: MTTR (Days)
       value_format:
       value_format_name: decimal_2
       _kind_hint: measure
@@ -659,7 +659,7 @@
       _type_hint: number
     - category: table_calculation
       expression: "${total_occurrence_mttr_calculation}/${sum_of_occurrence_resolved}"
-      label: 'Occurrence MTTR '
+      label: MTTR (Days)
       value_format:
       value_format_name: decimal_2
       _kind_hint: measure

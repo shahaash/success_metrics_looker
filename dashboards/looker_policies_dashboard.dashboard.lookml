@@ -266,7 +266,7 @@
       _type_hint: number
     - category: table_calculation
       expression: "${total_policy_mttr_calculation}/${sum_of_policy_resolved}"
-      label: Policy MTTR
+      label: MTTR (Days)
       value_format:
       value_format_name: decimal_2
       _kind_hint: measure
