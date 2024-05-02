@@ -115,17 +115,9 @@
     x_axis_zoom: true
     y_axis_zoom: true
     series_colors:
-      resolved - count: "#32D583"
-      open - count: "#F04438"
-      resolved - 1 - count: "#32D583"
-      open - 0 - count: "#F04438"
       sum_of_policy_resolved: "#32D583"
       sum_of_policy_open: "#F04438"
     series_labels:
-      resolved - count: Resolved
-      open - count: Open
-      resolved - 1 - count: Resolved
-      open - 0 - count: Open
       sum_of_policy_resolved: Resolved
       sum_of_policy_open: Open
     hidden_fields: [policy_violation_metric.policy_resolved, policy_violation_metric.policy_open]
@@ -463,17 +455,9 @@
     x_axis_zoom: true
     y_axis_zoom: true
     series_colors:
-      open - count: "#F04438"
-      resolved - count: "#32D583"
-      resolved - 1 - count: "#32D583"
-      open - 0 - count: "#F04438"
       sum_of_insight_resolved: "#32D583"
       sum_of_insight_open: "#F04438"
     series_labels:
-      open - count: Open
-      resolved - count: Resolved
-      resolved - 1 - count: Resolved
-      open - 0 - count: Open
       sum_of_insight_resolved: Resolved
       sum_of_insight_open: Open
     hidden_fields: [insight_occurrence_metric.insight_open, insight_occurrence_metric.insight_resolved]
@@ -815,17 +799,9 @@
     x_axis_zoom: true
     y_axis_zoom: true
     series_colors:
-      sum_of_insight_open: "#F04438"
-      sum_of_insight_resolved: "#32D583"
-      sum_of_insight_resolved - 1 - count: "#32D583"
-      sum_of_insight_open - 0 - count: "#F04438"
       sum_of_occurrence_open: "#F04438"
       sum_of_occurrence_resolved: "#32D583"
     series_labels:
-      sum_of_insight_open: Open
-      sum_of_insight_resolved: Resolved
-      sum_of_insight_resolved - 1 - count: Resolved
-      sum_of_insight_open - 0 - count: Open
       sum_of_occurrence_resolved: Resolved
       sum_of_occurrence_open: Open
     defaults_version: 1
