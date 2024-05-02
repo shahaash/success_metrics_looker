@@ -1,4 +1,3 @@
-
 - dashboard: looker_policies_dashboard
   title: Looker Policies Dashboard
   layout: newspaper
@@ -60,26 +59,28 @@
     model: metrics_looker
     explore: policy_violation_metric
     type: looker_area
-    fields: [policy_violation_metric.policy_period_date, policy_violation_metric.count,
-      policy_violation_metric.status_level]
-    pivots: [policy_violation_metric.status_level]
-    fill_fields: [policy_violation_metric.status_level]
-    filters:
-      policy_violation_metric.status: open,resolved
-    sorts: [policy_violation_metric.status_level desc, policy_violation_metric.policy_period_date
-        desc]
+    fields: [policy_violation_metric.policy_period_date, policy_violation_metric.policy_resolved,
+      policy_violation_metric.policy_open, sum_of_policy_resolved, sum_of_policy_open]
+    sorts: [policy_violation_metric.policy_period_date desc]
     limit: 500
     column_limit: 50
     dynamic_fields:
-    - category: table_calculation
-      expression: coalesce(${policy_violation_metric.count}, 0)
-      label: Count
-      value_format:
-      value_format_name:
+    - measure: sum_of_policy_resolved
+      based_on: policy_violation_metric.policy_resolved
+      expression: ''
+      label: Sum of Policy Resolved
+      type: sum
       _kind_hint: measure
-      table_calculation: count
       _type_hint: number
-    hidden_fields: [policy_violation_metric.count]
+    - measure: sum_of_policy_open
+      based_on: policy_violation_metric.policy_open
+      expression: ''
+      label: Sum of Policy Open
+      type: sum
+      _kind_hint: measure
+      _type_hint: number
+    filter_expression: "${policy_violation_metric.policy_open}>0 OR ${policy_violation_metric.policy_resolved}\
+      \ > 0"
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -118,13 +119,17 @@
       open - count: "#F04438"
       resolved - 1 - count: "#32D583"
       open - 0 - count: "#F04438"
+      sum_of_policy_resolved: "#32D583"
+      sum_of_policy_open: "#F04438"
     series_labels:
       resolved - count: Resolved
       open - count: Open
       resolved - 1 - count: Resolved
       open - 0 - count: Open
+      sum_of_policy_resolved: Resolved
+      sum_of_policy_open: Open
+    hidden_fields: [policy_violation_metric.policy_resolved, policy_violation_metric.policy_open]
     hidden_pivots: {}
-    hidden_fields: [policy_violation_metric.count]
     defaults_version: 1
     listen:
       Policy Name: policy.name
@@ -215,7 +220,6 @@
     column_group_spacing_ratio: 0.4
     defaults_version: 1
     hidden_pivots: {}
-    hidden_fields: [policy_violation_metric.count]
     listen:
       Policy Name: policy.name
       Monitored Service: monitored_service.name
