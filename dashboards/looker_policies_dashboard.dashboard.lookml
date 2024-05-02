@@ -115,17 +115,9 @@
     x_axis_zoom: true
     y_axis_zoom: true
     series_colors:
-      resolved - count: "#32D583"
-      open - count: "#F04438"
-      resolved - 1 - count: "#32D583"
-      open - 0 - count: "#F04438"
       sum_of_policy_resolved: "#32D583"
       sum_of_policy_open: "#F04438"
     series_labels:
-      resolved - count: Resolved
-      open - count: Open
-      resolved - 1 - count: Resolved
-      open - 0 - count: Open
       sum_of_policy_resolved: Resolved
       sum_of_policy_open: Open
     hidden_fields: [policy_violation_metric.policy_resolved, policy_violation_metric.policy_open]
@@ -324,6 +316,172 @@
       Date: policy_violation_metric.period_time_date
     row: 4
     col: 16
+    width: 8
+    height: 6
+  - name: " (4)"
+    type: text
+    title_text: ''
+    subtitle_text: ''
+    body_text: <h4 style="font-size:22px; margin-top:30px; font-style:normal">Policy
+      Issues Violations</h4>
+    row: 10
+    col: 0
+    width: 24
+    height: 2
+  - title: Total Policy Issue Violations Resolved
+    name: Total Policy Issue Violations Resolved
+    model: success_metrics_model
+    explore: policy_violation_metric
+    type: 2059_dvd_rental::Stat Card
+    fields: [policy_violation_metric.risk_level_order, sum_of_violation_resolved]
+    fill_fields: [policy_violation_metric.risk_level_order]
+    sorts: [sum_of_violation_resolved desc 0]
+    limit: 500
+    column_limit: 50
+    dynamic_fields:
+    - measure: sum_of_violation_resolved
+      based_on: policy_violation_metric.violation_resolved
+      expression: ''
+      label: Sum of Violation Resolved
+      type: sum
+      _kind_hint: measure
+      _type_hint: number
+    - category: table_calculation
+      expression: coalesce(${sum_of_violation_resolved}, 0)
+      label: Count
+      value_format:
+      value_format_name:
+      _kind_hint: measure
+      table_calculation: count
+      _type_hint: number
+    hidden_fields: [sum_of_violation_resolved]
+    hidden_points_if_no: []
+    series_labels: {}
+    show_view_names: false
+    hidden_pivots: {}
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    defaults_version: 0
+    listen:
+      Policy Name: policy.name
+      Monitored Service: monitored_service.name
+      Service Type: monitored_service_type.name
+      Policy Type: policy.type
+      Environment: environment_tag.name
+      Tags: general_tag.name
+      Compliance Framework: compliance_framework.name
+      Risk: policy_violation_metric.risk_level
+      Date: policy_violation_metric.period_time_date
+    row: 12
+    col: 0
+    width: 24
+    height: 2
+  - title: Open vs Resolved Policy Issue Violations
+    name: Open vs Resolved Policy Issue Violations
+    model: success_metrics_model
+    explore: policy_violation_metric
+    type: looker_area
+    fields: [policy_violation_metric.policy_period_date, policy_violation_metric.violation_resolved,
+      policy_violation_metric.violation_open, sum_of_violation_resolved, sum_of_violation_open]
+    sorts: [policy_violation_metric.policy_period_date desc]
+    limit: 500
+    column_limit: 50
+    dynamic_fields:
+    - measure: sum_of_violation_open
+      based_on: policy_violation_metric.violation_open
+      expression: ''
+      label: Sum of Violation Open
+      type: sum
+      _kind_hint: measure
+      _type_hint: number
+    - measure: sum_of_violation_resolved
+      based_on: policy_violation_metric.violation_resolved
+      expression: ''
+      label: Sum of Violation Resolved
+      type: sum
+      _kind_hint: measure
+      _type_hint: number
+    filter_expression: "${policy_violation_metric.violation_open} > 0 OR ${policy_violation_metric.violation_resolved}\
+      \ > 0"
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: normal
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: circle_outline
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    interpolation: linear
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    y_axes: [{label: Policy Issue Violations, orientation: left, series: [{axisId: sum_of_violation_resolved,
+            id: sum_of_violation_resolved, name: Resolved}, {axisId: sum_of_violation_open,
+            id: sum_of_violation_open, name: Open}], showLabels: true, showValues: true,
+        minValue: 1, unpinAxis: true, tickDensity: default, tickDensityCustom: 5,
+        type: linear}]
+    x_axis_label: ''
+    x_axis_zoom: true
+    y_axis_zoom: true
+    series_colors:
+      sum_of_violation_resolved: "#32D583"
+      sum_of_violation_open: "#F04438"
+    series_labels:
+      sum_of_violation_open: Open
+      sum_of_violation_resolved: Resolved
+    hidden_fields: [policy_violation_metric.violation_open, policy_violation_metric.violation_resolved]
+    defaults_version: 1
+    listen:
+      Policy Name: policy.name
+      Monitored Service: monitored_service.name
+      Service Type: monitored_service_type.name
+      Policy Type: policy.type
+      Environment: environment_tag.name
+      Tags: general_tag.name
+      Compliance Framework: compliance_framework.name
+      Risk: policy_violation_metric.risk_level
+      Date: policy_violation_metric.period_time_date
+    row: 14
+    col: 0
     width: 8
     height: 6
   filters:
