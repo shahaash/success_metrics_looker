@@ -218,6 +218,7 @@ view: insight_occurrence_metric {
     {% elsif _filters['period_time_date'] == '90 day' %} Month
     {% elsif _filters['period_time_date'] == '180 day' %} Month
     {% elsif _filters['period_time_date'] == '365 day' %} Month
+    {% elsif _filters['period_time_date'] == 'this week' %} Day
     {% elsif _filters['period_time_date'] == 'last week' %} Day
     {% elsif _filters['period_time_date'] == 'last month' %} Week
     {% elsif _filters['period_time_date'] == 'last quarter' %} Month
@@ -235,6 +236,7 @@ view: insight_occurrence_metric {
           {% elsif _filters['period_time_date'] == '90 day' %} {{period_time_month}}
           {% elsif _filters['period_time_date'] == '180 day' %} {{period_time_month}}
           {% elsif _filters['period_time_date'] == '365 day' %} {{period_time_month}}
+          {% elsif _filters['period_time_date'] == 'this week' %} {{period_time_date}}
           {% elsif _filters['period_time_date'] == 'last week' %} {{period_time_date}}
           {% elsif _filters['period_time_date'] == 'last month' %} {{period_time_week}}
           {% elsif _filters['period_time_date'] == 'last quarter' %} {{period_time_month}}

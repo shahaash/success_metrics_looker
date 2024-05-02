@@ -1106,7 +1106,7 @@
       display: overflow
       options: []
     model: metrics_looker
-    explore: policy_violation_metric
+    explore: policy
     listens_to_filters: []
     field: policy.name
   - name: Policy Type

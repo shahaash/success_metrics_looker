@@ -103,7 +103,7 @@ explore: policy_violation_metric {
     relationship: many_to_one
   }
   sql_always_where: {% if _user_attributes['appomni_env_restricted'] == "True" %}
-                      ${monitored_service_environment_tag.monitored_service_id} IN ({{ _user_attributes['appomni_allowed_envs']}}) AND
+                      ${monitored_service_environment_tag.environment_tag_id} IN ({{ _user_attributes['appomni_allowed_envs']}}) AND
                     {% endif %}
                     ${period} = ${period_range};;
   access_filter: {
@@ -153,7 +153,7 @@ explore: insight_occurrence_metric {
     relationship: many_to_one
   }
   sql_always_where: {% if _user_attributes['appomni_env_restricted'] == "True" %}
-                      ${monitored_service_environment_tag.monitored_service_id} IN ({{ _user_attributes['appomni_allowed_envs']}}) AND
+                      ${monitored_service_environment_tag.environment_tag_id} IN ({{ _user_attributes['appomni_allowed_envs']}}) AND
                     {% endif %}
                     ${period} = ${period_range};;
   access_filter: {
