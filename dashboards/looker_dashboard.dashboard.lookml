@@ -436,7 +436,8 @@
       type: sum
       _kind_hint: measure
       _type_hint: number
-    filter_expression: "${insight_occurrence_metric.insight_open} > 0 OR ${insight_occurrence_metric.insight_total_resolved}
+    filter_expression: "${insight_occurrence_metric.insight_open} > 0 OR ${insight_occurrence_metric.insight_total_resolved}\
+      \ > 0"
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -782,7 +783,7 @@
       type: sum
       _kind_hint: measure
       _type_hint: number
-    filter_expression: "${insight_occurrence_metric.occurrence_open} > 0 OR \n${insight_occurrence_metric.occurrence_total_resolved}
+    filter_expression: "${insight_occurrence_metric.occurrence_open} > 0 OR \n${insight_occurrence_metric.occurrence_total_resolved}\
       \ > 0"
     x_axis_gridlines: false
     y_axis_gridlines: true
@@ -1232,13 +1233,7 @@
         unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
     x_axis_zoom: true
     y_axis_zoom: true
-    series_colors:
-      Critical - 0 - count: "#A50000"
-      High - 1 - count: "#F04438"
-      Medium - 2 - count: "#F79009"
-      Low - 3 - count: "#FEC84B"
-      Informational - 4 - count: "#84CAFF"
-      Unknown - 5 - count: "#D2D6DB"
+
     column_group_spacing_ratio: 0.4
     hidden_pivots: {}
     hidden_fields: [sum_of_violation_resolved]
