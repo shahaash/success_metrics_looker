@@ -1232,6 +1232,13 @@
         unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
     x_axis_zoom: true
     y_axis_zoom: true
+    series_colors:
+      Critical - 0 - count: "#A50000"
+      High - 1 - count: "#F04438"
+      Medium - 2 - count: "#F79009"
+      Low - 3 - count: "#FEC84B"
+      Informational - 4 - count: "#84CAFF"
+      Unknown - 5 - count: "#D2D6DB"
     column_group_spacing_ratio: 0.4
     hidden_pivots: {}
     hidden_fields: [sum_of_violation_resolved]
