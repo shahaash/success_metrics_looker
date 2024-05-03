@@ -41,6 +41,14 @@ view: insight_occurrence_metric {
     type: number
     sql: ${TABLE}."insight_resolved" ;;
   }
+  dimension: insight_total_resolved {
+    type: number
+    sql: ${TABLE}."insight_total_resolved" ;;
+  }
+  dimension: occurrence_total_resolved {
+    type: number
+    sql: ${TABLE}."occurrence_total_resolved" ;;
+  }
   dimension_group: modified {
     type: time
     timeframes: [raw, time, date, week, month, quarter, year]
