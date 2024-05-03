@@ -3,7 +3,7 @@
   layout: newspaper
   preferred_viewer: dashboards-next
   description: ''
-  preferred_slug: 5bdzYges81FtaA8ZTQgG8z
+  preferred_slug: sLc16so1rRKL9bH3MsRViB
   elements:
   - name: ''
     type: text
@@ -60,13 +60,14 @@
     col: 0
     width: 24
     height: 2
-  - title: Open vs Resolved Policy Issues
+  - title: Open vs. Resolved Policy Issues
     name: Open vs Resolved Policy Issues
     model: metrics_looker
     explore: policy_violation_metric
     type: looker_area
     fields: [policy_violation_metric.policy_period_date, policy_violation_metric.policy_total_resolved,
       policy_violation_metric.policy_open, sum_of_policy_total_resolved, sum_of_policy_open]
+    filters: {}
     sorts: [policy_violation_metric.policy_period_date desc]
     limit: 500
     column_limit: 50
@@ -402,20 +403,21 @@
       Environment: environment_tag.name
       Tags: general_tag.name
       Service Type: monitored_service_type.name
-      Categories: insight_category.name
       Risk: insight_occurrence_metric.risk_level
+      Categories: insight_category.name
       Date: insight_occurrence_metric.period_time_date
     row: 22
     col: 0
     width: 24
     height: 2
-  - title: Open vs Resolved AppOmni Insights
+  - title: Open vs. Resolved AppOmni Insights
     name: Open vs Resolved AppOmni Insights
     model: metrics_looker
     explore: insight_occurrence_metric
     type: looker_area
     fields: [insight_occurrence_metric.insight_period_date, insight_occurrence_metric.insight_total_resolved,
       insight_occurrence_metric.insight_open, sum_of_insight_total_resolved, sum_of_insight_open]
+    filters: {}
     sorts: [insight_occurrence_metric.insight_period_date desc]
     limit: 500
     column_limit: 50
@@ -434,8 +436,7 @@
       type: sum
       _kind_hint: measure
       _type_hint: number
-    filter_expression: "${insight_occurrence_metric.insight_open} > 0 OR ${insight_occurrence_metric.insight_total_resolved}\
-      \ > 0"
+    filter_expression: "${insight_occurrence_metric.insight_open} > 0 OR ${insight_occurrence_metric.insight_total_resolved}
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -484,8 +485,8 @@
       Environment: environment_tag.name
       Tags: general_tag.name
       Service Type: monitored_service_type.name
-      Categories: insight_category.name
       Risk: insight_occurrence_metric.risk_level
+      Categories: insight_category.name
       Date: insight_occurrence_metric.period_time_date
     row: 24
     col: 0
@@ -577,8 +578,8 @@
       Environment: environment_tag.name
       Tags: general_tag.name
       Service Type: monitored_service_type.name
-      Categories: insight_category.name
       Risk: insight_occurrence_metric.risk_level
+      Categories: insight_category.name
       Date: insight_occurrence_metric.period_time_date
     row: 24
     col: 8
@@ -667,8 +668,8 @@
       Environment: environment_tag.name
       Tags: general_tag.name
       Service Type: monitored_service_type.name
-      Categories: insight_category.name
       Risk: insight_occurrence_metric.risk_level
+      Categories: insight_category.name
       Date: insight_occurrence_metric.period_time_date
     row: 24
     col: 16
@@ -737,7 +738,7 @@
     label_density: 25
     x_axis_scale: auto
     y_axis_combined: true
-    show_null_labels: true
+    show_null_labels: false
     ordering: none
     show_totals_labels: false
     show_silhouette: false
@@ -749,14 +750,14 @@
       Environment: environment_tag.name
       Tags: general_tag.name
       Service Type: monitored_service_type.name
-      Categories: insight_category.name
       Risk: insight_occurrence_metric.risk_level
+      Categories: insight_category.name
       Date: insight_occurrence_metric.period_time_date
     row: 32
     col: 0
     width: 24
     height: 2
-  - title: Open vs Resolved AppOmni Insight Occurrences
+  - title: Open vs. Resolved AppOmni Insight Occurrences
     name: Open vs Resolved AppOmni Insight Occurrences
     model: metrics_looker
     explore: insight_occurrence_metric
@@ -781,7 +782,7 @@
       type: sum
       _kind_hint: measure
       _type_hint: number
-    filter_expression: "${insight_occurrence_metric.occurrence_open} > 0 OR \n${insight_occurrence_metric.occurrence_total_resolved}\
+    filter_expression: "${insight_occurrence_metric.occurrence_open} > 0 OR \n${insight_occurrence_metric.occurrence_total_resolved}
       \ > 0"
     x_axis_gridlines: false
     y_axis_gridlines: true
@@ -831,8 +832,8 @@
       Environment: environment_tag.name
       Tags: general_tag.name
       Service Type: monitored_service_type.name
-      Categories: insight_category.name
       Risk: insight_occurrence_metric.risk_level
+      Categories: insight_category.name
       Date: insight_occurrence_metric.period_time_date
     row: 34
     col: 0
@@ -926,8 +927,8 @@
       Environment: environment_tag.name
       Tags: general_tag.name
       Service Type: monitored_service_type.name
-      Categories: insight_category.name
       Risk: insight_occurrence_metric.risk_level
+      Categories: insight_category.name
       Date: insight_occurrence_metric.period_time_date
     row: 34
     col: 8
@@ -1015,8 +1016,8 @@
       Environment: environment_tag.name
       Tags: general_tag.name
       Service Type: monitored_service_type.name
-      Categories: insight_category.name
       Risk: insight_occurrence_metric.risk_level
+      Categories: insight_category.name
       Date: insight_occurrence_metric.period_time_date
     row: 34
     col: 16
@@ -1025,9 +1026,8 @@
   - name: " (4)"
     type: text
     title_text: ''
-    subtitle_text: ''
     body_text: <h4 style="font-size:22px; margin-top:30px; font-style:normal">Policy
-      Issues Violations</h4>
+      Issue Violations</h4>
     row: 10
     col: 0
     width: 24
@@ -1058,37 +1058,12 @@
       _kind_hint: measure
       table_calculation: count
       _type_hint: number
+      is_disabled: false
     hidden_fields: [sum_of_violation_resolved]
     hidden_points_if_no: []
     series_labels: {}
-    show_view_names: false
+    show_view_names: true
     hidden_pivots: {}
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    y_axis_scale_mode: linear
-    x_axis_reversed: false
-    y_axis_reversed: false
-    plot_size_by_field: false
-    trellis: ''
-    stacking: ''
-    limit_displayed_rows: false
-    legend_position: center
-    point_style: none
-    show_value_labels: false
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
     defaults_version: 0
     listen:
       Policy Name: policy.name
@@ -1104,7 +1079,7 @@
     col: 0
     width: 24
     height: 2
-  - title: Open vs Resolved Policy Issue Violations
+  - title: Open vs. Resolved Policy Issue Violations
     name: Open vs Resolved Policy Issue Violations
     model: metrics_looker
     explore: policy_violation_metric
@@ -1267,6 +1242,7 @@
     ui_config:
       type: tag_list
       display: popover
+      options: []
     model: metrics_looker
     explore: monitored_service
     listens_to_filters: [Monitored Service]
