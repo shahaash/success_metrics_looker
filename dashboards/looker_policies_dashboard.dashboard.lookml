@@ -54,13 +54,14 @@
     col: 0
     width: 24
     height: 2
-  - title: Open vs Resolved Policy Issues
+  - title: Open vs. Resolved Policy Issues
     name: Open vs Resolved Policy Issues
     model: metrics_looker
     explore: policy_violation_metric
     type: looker_area
     fields: [policy_violation_metric.policy_period_date, policy_violation_metric.policy_resolved,
       policy_violation_metric.policy_open, sum_of_policy_resolved, sum_of_policy_open]
+    filters: {}
     sorts: [policy_violation_metric.policy_period_date desc]
     limit: 500
     column_limit: 50
@@ -161,7 +162,6 @@
       _kind_hint: measure
       table_calculation: count
       _type_hint: number
-    hidden_fields: [policy_violation_metric.count]
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -189,6 +189,7 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
+    hidden_fields: [policy_violation_metric.count]
     y_axes: [{label: Policy Issues by Risk Level, orientation: left, series: [{axisId: 1
               - 0 - policy_violation_metric.count, id: 1 - 0 - policy_violation_metric.count,
             name: Critical}, {axisId: 2 - 1 - policy_violation_metric.count, id: 2
@@ -323,19 +324,18 @@
     title_text: ''
     subtitle_text: ''
     body_text: <h4 style="font-size:22px; margin-top:30px; font-style:normal">Policy
-      Issues Violations</h4>
+      Issue Violations</h4>
     row: 10
     col: 0
     width: 24
     height: 2
   - title: Total Policy Issue Violations Resolved
     name: Total Policy Issue Violations Resolved
-    model: success_metrics_model
     explore: policy_violation_metric
-    type: 2059_dvd_rental::Stat Card
+    type: success_metrics_looker::stat_card
     fields: [policy_violation_metric.risk_level_order, sum_of_violation_resolved]
     fill_fields: [policy_violation_metric.risk_level_order]
-    sorts: [sum_of_violation_resolved desc 0]
+    sorts: [policy_violation_metric.risk_level_order]
     limit: 500
     column_limit: 50
     dynamic_fields:
@@ -354,53 +354,28 @@
       _kind_hint: measure
       table_calculation: count
       _type_hint: number
+      is_disabled: false
     hidden_fields: [sum_of_violation_resolved]
     hidden_points_if_no: []
     series_labels: {}
-    show_view_names: false
+    show_view_names: true
     hidden_pivots: {}
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    y_axis_scale_mode: linear
-    x_axis_reversed: false
-    y_axis_reversed: false
-    plot_size_by_field: false
-    trellis: ''
-    stacking: ''
-    limit_displayed_rows: false
-    legend_position: center
-    point_style: none
-    show_value_labels: false
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
     defaults_version: 0
     listen:
-      Policy Name: policy.name
-      Monitored Service: monitored_service.name
-      Service Type: monitored_service_type.name
-      Policy Type: policy.type
-      Environment: environment_tag.name
-      Tags: general_tag.name
-      Compliance Framework: compliance_framework.name
       Risk: policy_violation_metric.risk_level
       Date: policy_violation_metric.period_time_date
+      Monitored Service: monitored_service.name
+      Environment: environment_tag.name
+      Tags: general_tag.name
+      Service Type: monitored_service_type.name
+      Policy Name: policy.name
+      Policy Type: policy.type
+      Compliance Framework: compliance_framework.name
     row: 12
     col: 0
     width: 24
     height: 2
-  - title: Open vs Resolved Policy Issue Violations
+  - title: Open vs. Resolved Policy Issue Violations
     name: Open vs Resolved Policy Issue Violations
     model: success_metrics_model
     explore: policy_violation_metric
@@ -563,6 +538,7 @@
     ui_config:
       type: tag_list
       display: popover
+      options: []
     model: metrics_looker
     explore: monitored_service
     listens_to_filters: [Monitored Service]

@@ -3,7 +3,7 @@
   layout: newspaper
   preferred_viewer: dashboards-next
   description: ''
-  preferred_slug: 5bdzYges81FtaA8ZTQgG8z
+  preferred_slug: sLc16so1rRKL9bH3MsRViB
   elements:
   - name: ''
     type: text
@@ -54,7 +54,7 @@
     col: 0
     width: 24
     height: 2
-  - title: Open vs Resolved Policy Issues
+  - title: Open vs. Resolved Policy Issues
     name: Open vs Resolved Policy Issues
     model: metrics_looker
     explore: policy_violation_metric
@@ -66,33 +66,17 @@
     limit: 500
     column_limit: 50
     dynamic_fields:
-    - category: table_calculation
-      expression: coalesce(${sum_of_policy_resolved}, 0)
-      label: Resolved Count
-      value_format:
-      value_format_name:
+    - measure: sum_of_policy_resolved
+      based_on: policy_violation_metric.policy_resolved
+      expression: ''
+      label: Sum of Policy Resolved
+      type: sum
       _kind_hint: measure
-      table_calculation: resolved_count
-      _type_hint: number
-    - category: table_calculation
-      expression: coalesce(${sum_of_policy_open}, 0)
-      label: Open Count
-      value_format:
-      value_format_name:
-      _kind_hint: measure
-      table_calculation: open_count
       _type_hint: number
     - measure: sum_of_policy_open
       based_on: policy_violation_metric.policy_open
       expression: ''
       label: Sum of Policy Open
-      type: sum
-      _kind_hint: measure
-      _type_hint: number
-    - measure: sum_of_policy_resolved
-      based_on: policy_violation_metric.policy_resolved
-      expression: ''
-      label: Sum of Policy Resolved
       type: sum
       _kind_hint: measure
       _type_hint: number
@@ -125,20 +109,19 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
-    y_axes: [{label: Policy Issues, orientation: left, series: [{axisId: resolved_count,
-            id: resolved_count, name: Resolved}, {axisId: open_count, id: open_count,
-            name: Open}], showLabels: true, showValues: true, minValue: !!null '',
-        unpinAxis: true, tickDensity: default, tickDensityCustom: 5, type: linear}]
+    y_axes: [{label: Policy Issues, orientation: left, series: [{axisId: resolved
+              - 1 - count, id: resolved - 1 - count, name: Resolved}], showLabels: true,
+        showValues: true, minValue: 1, unpinAxis: true, tickDensity: default, tickDensityCustom: 5,
+        type: linear}]
     x_axis_zoom: true
     y_axis_zoom: true
     series_colors:
-      open_count: "#F04438"
-      resolved_count: "#32D583"
+      sum_of_policy_resolved: "#32D583"
+      sum_of_policy_open: "#F04438"
     series_labels:
-      open_count: Open
-      resolved_count: Resolved
-    hidden_fields: [sum_of_policy_open, sum_of_policy_resolved, policy_violation_metric.policy_open,
-      policy_violation_metric.policy_resolved]
+      sum_of_policy_resolved: Resolved
+      sum_of_policy_open: Open
+    hidden_fields: [policy_violation_metric.policy_resolved, policy_violation_metric.policy_open]
     hidden_pivots: {}
     defaults_version: 1
     listen:
@@ -411,44 +394,29 @@
     col: 0
     width: 24
     height: 2
-  - title: Open vs Resolved AppOmni Insights
+  - title: Open vs. Resolved AppOmni Insights
     name: Open vs Resolved AppOmni Insights
     model: metrics_looker
     explore: insight_occurrence_metric
     type: looker_area
     fields: [insight_occurrence_metric.insight_period_date, insight_occurrence_metric.insight_resolved,
       insight_occurrence_metric.insight_open, sum_of_insight_resolved, sum_of_insight_open]
+    filters: {}
     sorts: [insight_occurrence_metric.insight_period_date desc]
     limit: 500
     column_limit: 50
     dynamic_fields:
-    - category: table_calculation
-      expression: coalesce(${sum_of_insight_resolved}, 0)
-      label: Resolved Count
-      value_format:
-      value_format_name:
+    - measure: sum_of_insight_resolved
+      based_on: insight_occurrence_metric.insight_resolved
+      expression: ''
+      label: Sum of Insight Resolved
+      type: sum
       _kind_hint: measure
-      table_calculation: resolved_count
-      _type_hint: number
-    - category: table_calculation
-      expression: coalesce(${sum_of_insight_open}, 0)
-      label: Open Count
-      value_format:
-      value_format_name:
-      _kind_hint: measure
-      table_calculation: open_count
       _type_hint: number
     - measure: sum_of_insight_open
       based_on: insight_occurrence_metric.insight_open
       expression: ''
       label: Sum of Insight Open
-      type: sum
-      _kind_hint: measure
-      _type_hint: number
-    - measure: sum_of_insight_resolved
-      based_on: insight_occurrence_metric.insight_resolved
-      expression: ''
-      label: Sum of Insight Resolved
       type: sum
       _kind_hint: measure
       _type_hint: number
@@ -489,13 +457,12 @@
     x_axis_zoom: true
     y_axis_zoom: true
     series_colors:
-      resolved_count: "#32D583"
-      open_count: "#F04438"
+      sum_of_insight_resolved: "#32D583"
+      sum_of_insight_open: "#F04438"
     series_labels:
-      open_count: Open
-      resolved_count: Resolved
-    hidden_fields: [insight_occurrence_metric.insight_open, insight_occurrence_metric.insight_resolved,
-      sum_of_insight_open, sum_of_insight_resolved]
+      sum_of_insight_resolved: Resolved
+      sum_of_insight_open: Open
+    hidden_fields: [insight_occurrence_metric.insight_open, insight_occurrence_metric.insight_resolved]
     hidden_pivots: {}
     defaults_version: 1
     listen:
@@ -772,44 +739,29 @@
     col: 0
     width: 24
     height: 2
-  - title: Open vs Resolved AppOmni Insight Occurrences
+  - title: Open vs. Resolved AppOmni Insight Occurrences
     name: Open vs Resolved AppOmni Insight Occurrences
     model: metrics_looker
     explore: insight_occurrence_metric
     type: looker_area
     fields: [insight_occurrence_metric.insight_period_date, insight_occurrence_metric.occurrence_resolved,
       insight_occurrence_metric.occurrence_open, sum_of_occurrence_resolved, sum_of_occurrence_open]
+    filters: {}
     sorts: [insight_occurrence_metric.insight_period_date desc]
     limit: 500
     column_limit: 50
     dynamic_fields:
-    - category: table_calculation
-      expression: coalesce(${sum_of_occurrence_resolved}, 0)
-      label: Resolved Count
-      value_format:
-      value_format_name:
+    - measure: sum_of_occurrence_resolved
+      based_on: insight_occurrence_metric.occurrence_resolved
+      expression: ''
+      label: Sum of Occurrence Resolved
+      type: sum
       _kind_hint: measure
-      table_calculation: resolved_count
-      _type_hint: number
-    - category: table_calculation
-      expression: coalesce(${sum_of_occurrence_open}, 0)
-      label: Open Count
-      value_format:
-      value_format_name:
-      _kind_hint: measure
-      table_calculation: open_count
       _type_hint: number
     - measure: sum_of_occurrence_open
       based_on: insight_occurrence_metric.occurrence_open
       expression: ''
       label: Sum of Occurrence Open
-      type: sum
-      _kind_hint: measure
-      _type_hint: number
-    - measure: sum_of_occurrence_resolved
-      based_on: insight_occurrence_metric.occurrence_resolved
-      expression: ''
-      label: Sum of Occurrence Resolved
       type: sum
       _kind_hint: measure
       _type_hint: number
@@ -850,14 +802,13 @@
     x_axis_zoom: true
     y_axis_zoom: true
     series_colors:
-      resolved_count: "#32D583"
-      open_count: "#F04438"
+      sum_of_occurrence_open: "#F04438"
+      sum_of_occurrence_resolved: "#32D583"
     series_labels:
-      resolved_count: Resolved
-      open_count: Open
+      sum_of_occurrence_resolved: Resolved
+      sum_of_occurrence_open: Open
     defaults_version: 1
-    hidden_fields: [insight_occurrence_metric.occurrence_open, insight_occurrence_metric.occurrence_resolved,
-      sum_of_occurrence_open, sum_of_occurrence_resolved]
+    hidden_fields: [insight_occurrence_metric.occurrence_open, insight_occurrence_metric.occurrence_resolved]
     listen:
       Monitored Service: monitored_service.name
       Environment: environment_tag.name
@@ -1059,7 +1010,6 @@
   - name: " (4)"
     type: text
     title_text: ''
-    subtitle_text: ''
     body_text: <h4 style="font-size:22px; margin-top:30px; font-style:normal">Policy
       Issue Violations</h4>
     row: 10
@@ -1073,7 +1023,7 @@
     type: 2059_dvd_rental::Stat Card
     fields: [policy_violation_metric.risk_level_order, sum_of_violation_resolved]
     fill_fields: [policy_violation_metric.risk_level_order]
-    sorts: [sum_of_violation_resolved desc 0]
+    sorts: [policy_violation_metric.risk_level_order]
     limit: 500
     column_limit: 50
     dynamic_fields:
@@ -1092,37 +1042,12 @@
       _kind_hint: measure
       table_calculation: count
       _type_hint: number
+      is_disabled: false
     hidden_fields: [sum_of_violation_resolved]
     hidden_points_if_no: []
     series_labels: {}
-    show_view_names: false
+    show_view_names: true
     hidden_pivots: {}
-    x_axis_gridlines: false
-    y_axis_gridlines: true
-    show_y_axis_labels: true
-    show_y_axis_ticks: true
-    y_axis_tick_density: default
-    y_axis_tick_density_custom: 5
-    show_x_axis_label: true
-    show_x_axis_ticks: true
-    y_axis_scale_mode: linear
-    x_axis_reversed: false
-    y_axis_reversed: false
-    plot_size_by_field: false
-    trellis: ''
-    stacking: ''
-    limit_displayed_rows: false
-    legend_position: center
-    point_style: none
-    show_value_labels: false
-    label_density: 25
-    x_axis_scale: auto
-    y_axis_combined: true
-    ordering: none
-    show_null_labels: false
-    show_totals_labels: false
-    show_silhouette: false
-    totals_color: "#808080"
     defaults_version: 0
     listen:
       Policy Name: policy.name
@@ -1138,7 +1063,7 @@
     col: 0
     width: 24
     height: 2
-  - title: Open vs Resolved Policy Issue Violations
+  - title: Open vs. Resolved Policy Issue Violations
     name: Open vs Resolved Policy Issue Violations
     model: metrics_looker
     explore: policy_violation_metric
@@ -1259,6 +1184,7 @@
     ui_config:
       type: tag_list
       display: popover
+      options: []
     model: metrics_looker
     explore: monitored_service
     listens_to_filters: [Service Type]
@@ -1272,6 +1198,7 @@
     ui_config:
       type: tag_list
       display: popover
+      options: []
     model: metrics_looker
     explore: environment_tag
     listens_to_filters: []
@@ -1285,6 +1212,7 @@
     ui_config:
       type: tag_list
       display: popover
+      options: []
     model: metrics_looker
     explore: general_tag
     listens_to_filters: []
@@ -1298,6 +1226,7 @@
     ui_config:
       type: tag_list
       display: popover
+      options: []
     model: metrics_looker
     explore: monitored_service
     listens_to_filters: [Monitored Service]
@@ -1311,8 +1240,9 @@
     ui_config:
       type: tag_list
       display: overflow
+      options: []
     model: metrics_looker
-    explore: policy_violation_metric
+    explore: policy
     listens_to_filters: []
     field: policy.name
   - name: Policy Type
@@ -1324,6 +1254,7 @@
     ui_config:
       type: tag_list
       display: overflow
+      options: []
     model: metrics_looker
     explore: policy
     listens_to_filters: []
