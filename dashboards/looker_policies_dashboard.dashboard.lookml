@@ -41,15 +41,15 @@
     show_view_names: true
     defaults_version: 0
     listen:
-      Policy Name: policy.name
-      Monitored Service: monitored_service.name
-      Service Type: monitored_service_type.name
-      Policy Type: policy.type
-      Environment: environment_tag.name
-      Tags: general_tag.name
-      Compliance Framework: compliance_framework.name
       Risk: policy_violation_metric.risk_level
       Date: policy_violation_metric.period_time_date
+      Monitored Service: monitored_service.name
+      Environment: environment_tag.name
+      Tags: general_tag.name
+      Service Type: monitored_service_type.name
+      Policy Name: policy.name
+      Policy Type: policy.type
+      Compliance Framework: compliance_framework.name
     row: 2
     col: 0
     width: 24
@@ -125,15 +125,15 @@
     hidden_pivots: {}
     defaults_version: 1
     listen:
-      Policy Name: policy.name
-      Monitored Service: monitored_service.name
-      Service Type: monitored_service_type.name
-      Policy Type: policy.type
-      Environment: environment_tag.name
-      Tags: general_tag.name
-      Compliance Framework: compliance_framework.name
       Risk: policy_violation_metric.risk_level
       Date: policy_violation_metric.period_time_date
+      Monitored Service: monitored_service.name
+      Environment: environment_tag.name
+      Tags: general_tag.name
+      Service Type: monitored_service_type.name
+      Policy Name: policy.name
+      Policy Type: policy.type
+      Compliance Framework: compliance_framework.name
     row: 4
     col: 0
     width: 8
@@ -214,15 +214,15 @@
     defaults_version: 1
     hidden_pivots: {}
     listen:
-      Policy Name: policy.name
-      Monitored Service: monitored_service.name
-      Service Type: monitored_service_type.name
-      Policy Type: policy.type
-      Environment: environment_tag.name
-      Tags: general_tag.name
-      Compliance Framework: compliance_framework.name
       Risk: policy_violation_metric.risk_level
       Date: policy_violation_metric.period_time_date
+      Monitored Service: monitored_service.name
+      Environment: environment_tag.name
+      Tags: general_tag.name
+      Service Type: monitored_service_type.name
+      Policy Name: policy.name
+      Policy Type: policy.type
+      Compliance Framework: compliance_framework.name
     row: 4
     col: 8
     width: 8
@@ -306,15 +306,15 @@
     hidden_fields: [policy_violation_metric.policy_resolved, total_policy_mttr_calculation,
       sum_of_policy_resolved]
     listen:
-      Policy Name: policy.name
-      Monitored Service: monitored_service.name
-      Service Type: monitored_service_type.name
-      Policy Type: policy.type
-      Environment: environment_tag.name
-      Tags: general_tag.name
-      Compliance Framework: compliance_framework.name
       Risk: policy_violation_metric.risk_level
       Date: policy_violation_metric.period_time_date
+      Monitored Service: monitored_service.name
+      Environment: environment_tag.name
+      Tags: general_tag.name
+      Service Type: monitored_service_type.name
+      Policy Name: policy.name
+      Policy Type: policy.type
+      Compliance Framework: compliance_framework.name
     row: 4
     col: 16
     width: 8
@@ -322,7 +322,6 @@
   - name: " (4)"
     type: text
     title_text: ''
-    subtitle_text: ''
     body_text: <h4 style="font-size:22px; margin-top:30px; font-style:normal">Policy
       Issue Violations</h4>
     row: 10
@@ -331,8 +330,9 @@
     height: 2
   - title: Total Policy Issue Violations Resolved
     name: Total Policy Issue Violations Resolved
+    model: metrics_looker
     explore: policy_violation_metric
-    type: success_metrics_looker::stat_card
+    type: 2059_dvd_rental::Stat Card
     fields: [policy_violation_metric.risk_level_order, sum_of_violation_resolved]
     fill_fields: [policy_violation_metric.risk_level_order]
     sorts: [policy_violation_metric.risk_level_order]
@@ -377,7 +377,7 @@
     height: 2
   - title: Open vs. Resolved Policy Issue Violations
     name: Open vs Resolved Policy Issue Violations
-    model: success_metrics_model
+    model: metrics_looker
     explore: policy_violation_metric
     type: looker_area
     fields: [policy_violation_metric.policy_period_date, policy_violation_metric.violation_resolved,
@@ -446,17 +446,195 @@
     hidden_fields: [policy_violation_metric.violation_open, policy_violation_metric.violation_resolved]
     defaults_version: 1
     listen:
-      Policy Name: policy.name
-      Monitored Service: monitored_service.name
-      Service Type: monitored_service_type.name
-      Policy Type: policy.type
-      Environment: environment_tag.name
-      Tags: general_tag.name
-      Compliance Framework: compliance_framework.name
       Risk: policy_violation_metric.risk_level
       Date: policy_violation_metric.period_time_date
+      Monitored Service: monitored_service.name
+      Environment: environment_tag.name
+      Tags: general_tag.name
+      Service Type: monitored_service_type.name
+      Policy Name: policy.name
+      Policy Type: policy.type
+      Compliance Framework: compliance_framework.name
     row: 14
     col: 0
+    width: 8
+    height: 6
+  - title: Policy Issue Violations Resolved Over Time
+    name: Policy Issue Violations Resolved Over Time
+    model: metrics_looker
+    explore: policy_violation_metric
+    type: looker_column
+    fields: [policy_violation_metric.risk_level_order, policy_violation_metric.policy_period_date,
+      sum_of_violation_resolved]
+    pivots: [policy_violation_metric.risk_level_order]
+    fill_fields: [policy_violation_metric.risk_level_order, policy_violation_metric.policy_period_date]
+    filters:
+      policy_violation_metric.status: resolved
+    sorts: [policy_violation_metric.risk_level_order, policy_violation_metric.policy_period_date
+        desc]
+    limit: 500
+    column_limit: 50
+    dynamic_fields:
+    - measure: sum_of_violation_resolved
+      based_on: policy_violation_metric.violation_resolved
+      expression: ''
+      label: Sum of Violation Resolved
+      type: sum
+      _kind_hint: measure
+      _type_hint: number
+    - category: table_calculation
+      expression: coalesce(${sum_of_violation_resolved}, 0)
+      label: Count
+      value_format:
+      value_format_name:
+      _kind_hint: measure
+      table_calculation: count
+      _type_hint: number
+      is_disabled: false
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: normal
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    y_axes: [{label: '', orientation: left, series: [{axisId: Critical - 0 - count,
+            id: Critical - 0 - count, name: Critical}, {axisId: High - 1 - count,
+            id: High - 1 - count, name: High}, {axisId: Medium - 2 - count, id: Medium
+              - 2 - count, name: Medium}, {axisId: Low - 3 - count, id: Low - 3 -
+              count, name: Low}, {axisId: Informational - 4 - count, id: Informational
+              - 4 - count, name: Informational}, {axisId: Unknown - 5 - count, id: Unknown
+              - 5 - count, name: Unknown}], showLabels: true, showValues: true, minValue: !!null '',
+        unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
+    x_axis_zoom: true
+    y_axis_zoom: true
+    column_group_spacing_ratio: 0.4
+    hidden_pivots: {}
+    hidden_fields: [sum_of_violation_resolved]
+    defaults_version: 1
+    listen:
+      Risk: policy_violation_metric.risk_level
+      Date: policy_violation_metric.period_time_date
+      Monitored Service: monitored_service.name
+      Environment: environment_tag.name
+      Tags: general_tag.name
+      Service Type: monitored_service_type.name
+      Policy Name: policy.name
+      Policy Type: policy.type
+      Compliance Framework: compliance_framework.name
+    row: 14
+    col: 8
+    width: 8
+    height: 6
+  - title: Policy Issue Violations Mean Time to Resolution
+    name: Policy Issue Violations Mean Time to Resolution
+    model: metrics_looker
+    explore: policy_violation_metric
+    type: looker_line
+    fields: [policy_violation_metric.policy_period_date, total_policy_violations_mttr_calculation,
+      sum_of_violation_resolved, policy_violation_metric.violation_resolved]
+    filters:
+      policy_violation_metric.violation_resolved: ">0"
+    sorts: [policy_violation_metric.policy_period_date desc]
+    limit: 500
+    column_limit: 50
+    dynamic_fields:
+    - category: dimension
+      expression: "${policy_violation_metric.violation_mttr} * ${policy_violation_metric.violation_resolved}"
+      label: Policy Issue Violations MTTR
+      value_format:
+      value_format_name:
+      dimension: policy_issue_violations_mttr
+      _kind_hint: dimension
+      _type_hint: number
+    - category: measure
+      expression:
+      label: Total Policy Violations MTTR Calculation
+      value_format:
+      value_format_name:
+      based_on: policy_issue_violations_mttr
+      _kind_hint: measure
+      measure: total_policy_violations_mttr_calculation
+      type: sum
+      _type_hint: number
+    - measure: sum_of_violation_resolved
+      based_on: policy_violation_metric.violation_resolved
+      expression: ''
+      label: Sum of Violation Resolved
+      type: sum
+      _kind_hint: measure
+      _type_hint: number
+    - category: table_calculation
+      expression: "${total_policy_violations_mttr_calculation}/${sum_of_violation_resolved}"
+      label: MTTR (Days)
+      value_format:
+      value_format_name: decimal_2
+      _kind_hint: measure
+      table_calculation: mttr_days
+      _type_hint: number
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: circle_outline
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    interpolation: linear
+    x_axis_zoom: true
+    y_axis_zoom: true
+    trend_lines: [{color: "#b8b8b8", label_position: right, order: 3, period: 7, regression_type: linear,
+        series_index: 1, show_label: false}]
+    defaults_version: 1
+    hidden_fields: [policy_violation_metric.violation_resolved, total_policy_violations_mttr_calculation,
+      sum_of_violation_resolved]
+    listen:
+      Risk: policy_violation_metric.risk_level
+      Date: policy_violation_metric.period_time_date
+      Monitored Service: monitored_service.name
+      Environment: environment_tag.name
+      Tags: general_tag.name
+      Service Type: monitored_service_type.name
+      Policy Name: policy.name
+      Policy Type: policy.type
+      Compliance Framework: compliance_framework.name
+    row: 14
+    col: 16
     width: 8
     height: 6
   filters:
@@ -496,7 +674,6 @@
     ui_config:
       type: tag_list
       display: popover
-      options: []
     model: metrics_looker
     explore: monitored_service
     listens_to_filters: [Service Type]
@@ -510,7 +687,6 @@
     ui_config:
       type: tag_list
       display: popover
-      options: []
     model: metrics_looker
     explore: environment_tag
     listens_to_filters: []
@@ -524,7 +700,6 @@
     ui_config:
       type: tag_list
       display: popover
-      options: []
     model: metrics_looker
     explore: general_tag
     listens_to_filters: []
@@ -538,7 +713,6 @@
     ui_config:
       type: tag_list
       display: popover
-      options: []
     model: metrics_looker
     explore: monitored_service
     listens_to_filters: [Monitored Service]
@@ -552,7 +726,6 @@
     ui_config:
       type: tag_list
       display: overflow
-      options: []
     model: metrics_looker
     explore: policy
     listens_to_filters: []
@@ -566,7 +739,6 @@
     ui_config:
       type: tag_list
       display: overflow
-      options: []
     model: metrics_looker
     explore: policy
     listens_to_filters: []
