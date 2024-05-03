@@ -3,7 +3,7 @@
   layout: newspaper
   preferred_viewer: dashboards-next
   description: ''
-  preferred_slug: Mh2mm0mIRscEKdItMU71dg
+  preferred_slug: 5bdzYges81FtaA8ZTQgG8z
   elements:
   - name: ''
     type: text
@@ -16,8 +16,9 @@
     height: 2
   - title: Total Policy Issues Resolved
     name: Total Policy Issues Resolved
+    model: metrics_looker
     explore: policy_violation_metric
-    type: success_metrics_looker::stat_card
+    type: 2059_dvd_rental::Stat Card
     fields: [policy_violation_metric.risk_level_order, policy_violation_metric.count]
     fill_fields: [policy_violation_metric.risk_level_order]
     filters:
@@ -55,10 +56,11 @@
     height: 2
   - title: Open vs Resolved Policy Issues
     name: Open vs Resolved Policy Issues
+    model: metrics_looker
     explore: policy_violation_metric
     type: looker_area
-    fields: [policy_violation_metric.policy_period_date, sum_of_policy_open, sum_of_policy_resolved,
-    policy_violation_metric.policy_open, policy_violation_metric.policy_resolved]
+    fields: [policy_violation_metric.policy_period_date, policy_violation_metric.policy_resolved,
+      policy_violation_metric.policy_open, sum_of_policy_resolved, sum_of_policy_open]
     filters: {}
     sorts: [policy_violation_metric.policy_period_date desc]
     limit: 500
@@ -155,6 +157,7 @@
     height: 6
   - title: Policy Issues Resolved Over Time
     name: Policy Issues Resolved Over Time
+    model: metrics_looker
     explore: policy_violation_metric
     type: looker_column
     fields: [policy_violation_metric.count, policy_violation_metric.policy_period_date,
@@ -243,6 +246,7 @@
     height: 6
   - title: Policy Issues Mean Time to Resolution
     name: Policy Issues Mean Time to Resolution
+    model: metrics_looker
     explore: policy_violation_metric
     type: looker_line
     fields: [policy_violation_metric.policy_period_date, total_policy_mttr_calculation,
@@ -337,14 +341,15 @@
     title_text: ''
     body_text: <h4 style="font-size:22px; margin-top:30px; font-style:normal">AppOmni
       Insights</h4>
-    row: 14
+    row: 20
     col: 0
     width: 24
     height: 2
   - title: Total AppOmni Insights Resolved
     name: Total AppOmni Insights Resolved
+    model: metrics_looker
     explore: insight_occurrence_metric
-    type: success_metrics_looker::stat_card
+    type: 2059_dvd_rental::Stat Card
     fields: [insight_occurrence_metric.risk_level_order, insight_occurrence_metric.count]
     fill_fields: [insight_occurrence_metric.risk_level_order]
     filters:
@@ -402,17 +407,17 @@
       Risk: insight_occurrence_metric.risk_level
       Categories: insight_category.name
       Date: insight_occurrence_metric.period_time_date
-    row: 16
+    row: 22
     col: 0
     width: 24
     height: 2
   - title: Open vs Resolved AppOmni Insights
     name: Open vs Resolved AppOmni Insights
+    model: metrics_looker
     explore: insight_occurrence_metric
     type: looker_area
-    fields: [insight_occurrence_metric.insight_period_date, insight_occurrence_metric.insight_open,
-      insight_occurrence_metric.insight_resolved, sum_of_insight_open, sum_of_insight_resolved]
-    filters: {}
+    fields: [insight_occurrence_metric.insight_period_date, insight_occurrence_metric.insight_resolved,
+      insight_occurrence_metric.insight_open, sum_of_insight_resolved, sum_of_insight_open]
     sorts: [insight_occurrence_metric.insight_period_date desc]
     limit: 500
     column_limit: 50
@@ -501,12 +506,13 @@
       Risk: insight_occurrence_metric.risk_level
       Categories: insight_category.name
       Date: insight_occurrence_metric.period_time_date
-    row: 18
+    row: 24
     col: 0
     width: 8
     height: 6
   - title: AppOmni Insights Resolved Over Time
     name: AppOmni Insights Resolved Over Time
+    model: metrics_looker
     explore: insight_occurrence_metric
     type: looker_column
     fields: [insight_occurrence_metric.risk_level_order, insight_occurrence_metric.count,
@@ -588,12 +594,13 @@
       Risk: insight_occurrence_metric.risk_level
       Categories: insight_category.name
       Date: insight_occurrence_metric.period_time_date
-    row: 18
+    row: 24
     col: 8
     width: 8
     height: 6
   - title: AppOmni Insights Mean Time to Resolution
     name: AppOmni Insights Mean Time to Resolution
+    model: metrics_looker
     explore: insight_occurrence_metric
     type: looker_line
     fields: [insight_occurrence_metric.insight_period_date, total_insight_mttr_calculation,
@@ -631,7 +638,7 @@
       _type_hint: number
     - category: table_calculation
       expression: "${total_insight_mttr_calculation}/${sum_of_insight_resolved}"
-      label: Insight MTTR
+      label: MTTR (Days)
       value_format:
       value_format_name: decimal_2
       _kind_hint: measure
@@ -677,7 +684,7 @@
       Risk: insight_occurrence_metric.risk_level
       Categories: insight_category.name
       Date: insight_occurrence_metric.period_time_date
-    row: 18
+    row: 24
     col: 16
     width: 8
     height: 6
@@ -686,14 +693,15 @@
     title_text: ''
     body_text: <h4 style="font-size:22px; margin-top:30px; font-style:normal">AppOmni
       Insight Occurrences</h4>
-    row: 24
+    row: 30
     col: 0
     width: 24
     height: 2
   - title: Total AppOmni Insight Occurrences Resolved
     name: Total AppOmni Insight Occurrences Resolved
+    model: metrics_looker
     explore: insight_occurrence_metric
-    type: success_metrics_looker::stat_card
+    type: 2059_dvd_rental::Stat Card
     fields: [insight_occurrence_metric.risk_level_order, sum_of_occurrence_resolved]
     fill_fields: [insight_occurrence_metric.risk_level_order]
     filters:
@@ -745,8 +753,8 @@
     label_density: 25
     x_axis_scale: auto
     y_axis_combined: true
-    ordering: none
     show_null_labels: false
+    ordering: none
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
@@ -760,17 +768,17 @@
       Risk: insight_occurrence_metric.risk_level
       Categories: insight_category.name
       Date: insight_occurrence_metric.period_time_date
-    row: 26
+    row: 32
     col: 0
     width: 24
     height: 2
   - title: Open vs Resolved AppOmni Insight Occurrences
     name: Open vs Resolved AppOmni Insight Occurrences
+    model: metrics_looker
     explore: insight_occurrence_metric
     type: looker_area
-    fields: [insight_occurrence_metric.insight_period_date, insight_occurrence_metric.occurrence_open,
-      insight_occurrence_metric.occurrence_resolved, sum_of_occurrence_open, sum_of_occurrence_resolved]
-    filters: {}
+    fields: [insight_occurrence_metric.insight_period_date, insight_occurrence_metric.occurrence_resolved,
+      insight_occurrence_metric.occurrence_open, sum_of_occurrence_resolved, sum_of_occurrence_open]
     sorts: [insight_occurrence_metric.insight_period_date desc]
     limit: 500
     column_limit: 50
@@ -834,10 +842,10 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
-    y_axes: [{label: AppOmni Insights Occurrences, orientation: left, series: [{axisId: sum_of_insight_open,
-            id: sum_of_insight_open, name: Sum of Insight Open}, {axisId: sum_of_insight_resolved,
-            id: sum_of_insight_resolved, name: Sum of Insight Resolved}], showLabels: true,
-        showValues: true, unpinAxis: true, tickDensity: default, tickDensityCustom: 5,
+    y_axes: [{label: AppOmni Insights Occurrences, orientation: left, series: [{axisId: sum_of_occurrence_resolved,
+            id: sum_of_occurrence_resolved, name: Sum of Occurrence Resolved}, {axisId: sum_of_occurrence_open,
+            id: sum_of_occurrence_open, name: Sum of Occurrence Open}], showLabels: true,
+        showValues: true, minValue: 1, unpinAxis: true, tickDensity: default, tickDensityCustom: 5,
         type: linear}]
     x_axis_zoom: true
     y_axis_zoom: true
@@ -858,12 +866,13 @@
       Risk: insight_occurrence_metric.risk_level
       Categories: insight_category.name
       Date: insight_occurrence_metric.period_time_date
-    row: 28
+    row: 34
     col: 0
     width: 8
     height: 6
   - title: AppOmni Insight Occurrences Resolved Over Time
     name: AppOmni Insight Occurrences Resolved Over Time
+    model: metrics_looker
     explore: insight_occurrence_metric
     type: looker_column
     fields: [sum_of_occurrence_resolved, insight_occurrence_metric.insight_period_date,
@@ -954,12 +963,13 @@
       Risk: insight_occurrence_metric.risk_level
       Categories: insight_category.name
       Date: insight_occurrence_metric.period_time_date
-    row: 28
+    row: 34
     col: 8
     width: 8
     height: 6
   - title: AppOmni Insights Occurrences Mean Time to Resolution
     name: AppOmni Insights Occurrences Mean Time to Resolution
+    model: metrics_looker
     explore: insight_occurrence_metric
     type: looker_line
     fields: [insight_occurrence_metric.insight_period_date, total_occurrence_mttr_calculation,
@@ -997,7 +1007,7 @@
       _type_hint: number
     - category: table_calculation
       expression: "${total_occurrence_mttr_calculation}/${sum_of_occurrence_resolved}"
-      label: 'Occurrence MTTR '
+      label: MTTR (Days)
       value_format:
       value_format_name: decimal_2
       _kind_hint: measure
@@ -1042,7 +1052,7 @@
       Risk: insight_occurrence_metric.risk_level
       Categories: insight_category.name
       Date: insight_occurrence_metric.period_time_date
-    row: 28
+    row: 34
     col: 16
     width: 8
     height: 6
@@ -1058,11 +1068,12 @@
     height: 2
   - title: Total Policy Issue Violations Resolved
     name: Total Policy Issue Violations Resolved
+    model: metrics_looker
     explore: policy_violation_metric
-    type: success_metrics_looker::stat_card
+    type: 2059_dvd_rental::Stat Card
     fields: [policy_violation_metric.risk_level_order, sum_of_violation_resolved]
     fill_fields: [policy_violation_metric.risk_level_order]
-    sorts: [policy_violation_metric.risk_level_order]
+    sorts: [sum_of_violation_resolved desc 0]
     limit: 500
     column_limit: 50
     dynamic_fields:
@@ -1081,27 +1092,136 @@
       _kind_hint: measure
       table_calculation: count
       _type_hint: number
-      is_disabled: false
     hidden_fields: [sum_of_violation_resolved]
     hidden_points_if_no: []
     series_labels: {}
-    show_view_names: true
+    show_view_names: false
     hidden_pivots: {}
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: ''
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: none
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    ordering: none
+    show_null_labels: false
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
     defaults_version: 0
     listen:
-      Risk: policy_violation_metric.risk_level
-      Date: policy_violation_metric.period_time_date
+      Policy Name: policy.name
       Monitored Service: monitored_service.name
+      Service Type: monitored_service_type.name
+      Policy Type: policy.type
       Environment: environment_tag.name
       Tags: general_tag.name
-      Service Type: monitored_service_type.name
-      Policy Name: policy.name
-      Policy Type: policy.type
       Compliance Framework: compliance_framework.name
+      Risk: policy_violation_metric.risk_level
+      Date: policy_violation_metric.period_time_date
     row: 12
     col: 0
     width: 24
     height: 2
+  - title: Open vs Resolved Policy Issue Violations
+    name: Open vs Resolved Policy Issue Violations
+    model: metrics_looker
+    explore: policy_violation_metric
+    type: looker_area
+    fields: [policy_violation_metric.policy_period_date, policy_violation_metric.violation_resolved,
+      policy_violation_metric.violation_open, sum_of_violation_resolved, sum_of_violation_open]
+    sorts: [policy_violation_metric.policy_period_date desc]
+    limit: 500
+    column_limit: 50
+    dynamic_fields:
+    - measure: sum_of_violation_open
+      based_on: policy_violation_metric.violation_open
+      expression: ''
+      label: Sum of Violation Open
+      type: sum
+      _kind_hint: measure
+      _type_hint: number
+    - measure: sum_of_violation_resolved
+      based_on: policy_violation_metric.violation_resolved
+      expression: ''
+      label: Sum of Violation Resolved
+      type: sum
+      _kind_hint: measure
+      _type_hint: number
+    filter_expression: "${policy_violation_metric.violation_open} > 0 OR ${policy_violation_metric.violation_resolved}\
+      \ > 0"
+    x_axis_gridlines: false
+    y_axis_gridlines: true
+    show_view_names: false
+    show_y_axis_labels: true
+    show_y_axis_ticks: true
+    y_axis_tick_density: default
+    y_axis_tick_density_custom: 5
+    show_x_axis_label: true
+    show_x_axis_ticks: true
+    y_axis_scale_mode: linear
+    x_axis_reversed: false
+    y_axis_reversed: false
+    plot_size_by_field: false
+    trellis: ''
+    stacking: normal
+    limit_displayed_rows: false
+    legend_position: center
+    point_style: circle_outline
+    show_value_labels: false
+    label_density: 25
+    x_axis_scale: auto
+    y_axis_combined: true
+    show_null_points: true
+    interpolation: linear
+    show_totals_labels: false
+    show_silhouette: false
+    totals_color: "#808080"
+    y_axes: [{label: Policy Issue Violations, orientation: left, series: [{axisId: sum_of_violation_resolved,
+            id: sum_of_violation_resolved, name: Resolved}, {axisId: sum_of_violation_open,
+            id: sum_of_violation_open, name: Open}], showLabels: true, showValues: true,
+        minValue: 1, unpinAxis: true, tickDensity: default, tickDensityCustom: 5,
+        type: linear}]
+    x_axis_label: ''
+    x_axis_zoom: true
+    y_axis_zoom: true
+    series_colors:
+      sum_of_violation_resolved: "#32D583"
+      sum_of_violation_open: "#F04438"
+    series_labels:
+      sum_of_violation_open: Open
+      sum_of_violation_resolved: Resolved
+    hidden_fields: [policy_violation_metric.violation_open, policy_violation_metric.violation_resolved]
+    defaults_version: 1
+    listen:
+      Policy Name: policy.name
+      Monitored Service: monitored_service.name
+      Service Type: monitored_service_type.name
+      Policy Type: policy.type
+      Environment: environment_tag.name
+      Tags: general_tag.name
+      Compliance Framework: compliance_framework.name
+      Risk: policy_violation_metric.risk_level
+      Date: policy_violation_metric.period_time_date
+    row: 14
+    col: 0
+    width: 8
+    height: 6
   filters:
   - name: Date
     title: Date
@@ -1113,6 +1233,7 @@
       type: relative_timeframes
       display: inline
       options: []
+    model: metrics_looker
     explore: policy_violation_metric
     listens_to_filters: []
     field: policy_violation_metric.looker_date
@@ -1125,6 +1246,7 @@
     ui_config:
       type: tag_list
       display: popover
+    model: metrics_looker
     explore: policy_violation_metric
     listens_to_filters: []
     field: policy_violation_metric.risk_level
@@ -1137,7 +1259,7 @@
     ui_config:
       type: tag_list
       display: popover
-      options: []
+    model: metrics_looker
     explore: monitored_service
     listens_to_filters: [Service Type]
     field: monitored_service.name
@@ -1150,7 +1272,7 @@
     ui_config:
       type: tag_list
       display: popover
-      options: []
+    model: metrics_looker
     explore: environment_tag
     listens_to_filters: []
     field: environment_tag.name
@@ -1163,7 +1285,7 @@
     ui_config:
       type: tag_list
       display: popover
-      options: []
+    model: metrics_looker
     explore: general_tag
     listens_to_filters: []
     field: general_tag.name
@@ -1176,7 +1298,7 @@
     ui_config:
       type: tag_list
       display: popover
-      options: []
+    model: metrics_looker
     explore: monitored_service
     listens_to_filters: [Monitored Service]
     field: monitored_service_type.name
@@ -1189,7 +1311,7 @@
     ui_config:
       type: tag_list
       display: overflow
-      options: []
+    model: metrics_looker
     explore: policy_violation_metric
     listens_to_filters: []
     field: policy.name
@@ -1202,7 +1324,7 @@
     ui_config:
       type: tag_list
       display: overflow
-      options: []
+    model: metrics_looker
     explore: policy
     listens_to_filters: []
     field: policy.type
@@ -1215,6 +1337,7 @@
     ui_config:
       type: tag_list
       display: overflow
+    model: metrics_looker
     explore: insight_category
     listens_to_filters: []
     field: insight_category.name
@@ -1227,6 +1350,7 @@
     ui_config:
       type: tag_list
       display: overflow
+    model: metrics_looker
     explore: compliance_framework
     listens_to_filters: []
     field: compliance_framework.name

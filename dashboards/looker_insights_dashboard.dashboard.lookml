@@ -85,26 +85,28 @@
     model: metrics_looker
     explore: insight_occurrence_metric
     type: looker_area
-    fields: [insight_occurrence_metric.count, insight_occurrence_metric.insight_period_date,
-      insight_occurrence_metric.status_level]
-    pivots: [insight_occurrence_metric.status_level]
-    fill_fields: [insight_occurrence_metric.status_level]
-    filters:
-      insight_occurrence_metric.status: open,resolved
-    sorts: [insight_occurrence_metric.status_level desc, insight_occurrence_metric.insight_period_date
-        desc]
+    fields: [insight_occurrence_metric.insight_period_date, insight_occurrence_metric.insight_resolved,
+      insight_occurrence_metric.insight_open, sum_of_insight_resolved, sum_of_insight_open]
+    sorts: [insight_occurrence_metric.insight_period_date desc]
     limit: 500
     column_limit: 50
     dynamic_fields:
-    - category: table_calculation
-      expression: coalesce(${insight_occurrence_metric.count}, 0)
-      label: Count
-      value_format:
-      value_format_name:
+    - measure: sum_of_insight_open
+      based_on: insight_occurrence_metric.insight_open
+      expression: ''
+      label: Sum of Insight Open
+      type: sum
       _kind_hint: measure
-      table_calculation: count
       _type_hint: number
-    hidden_fields: [insight_occurrence_metric.count]
+    - measure: sum_of_insight_resolved
+      based_on: insight_occurrence_metric.insight_resolved
+      expression: ''
+      label: Sum of Insight Resolved
+      type: sum
+      _kind_hint: measure
+      _type_hint: number
+    filter_expression: "${insight_occurrence_metric.insight_open} > 0 OR ${insight_occurrence_metric.insight_resolved}\
+      \ > 0"
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -144,13 +146,17 @@
       resolved - count: "#32D583"
       resolved - 1 - count: "#32D583"
       open - 0 - count: "#F04438"
+      sum_of_insight_resolved: "#32D583"
+      sum_of_insight_open: "#F04438"
     series_labels:
       open - count: Open
       resolved - count: Resolved
       resolved - 1 - count: Resolved
       open - 0 - count: Open
+      sum_of_insight_resolved: Resolved
+      sum_of_insight_open: Open
+    hidden_fields: [insight_occurrence_metric.insight_open, insight_occurrence_metric.insight_resolved]
     hidden_pivots: {}
-    hidden_fields: [insight_occurrence_metric.count]
     defaults_version: 1
     listen:
       Monitored Service: monitored_service.name
@@ -188,7 +194,6 @@
       _kind_hint: measure
       table_calculation: count
       _type_hint: number
-    hidden_fields: [insight_occurrence_metric.count]
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -216,6 +221,7 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
+    hidden_fields: [insight_occurrence_metric.count]
     y_axes: [{label: AppOmni Insights, orientation: left, series: [{axisId: 1 - 0
               - insight_occurrence_metric.count, id: 1 - 0 - insight_occurrence_metric.count,
             name: Critical}, {axisId: 2 - 1 - insight_occurrence_metric.count, id: 2
@@ -240,7 +246,6 @@
     column_group_spacing_ratio: 0.4
     hidden_pivots: {}
     defaults_version: 1
-    hidden_fields: [insight_occurrence_metric.count]
     listen:
       Monitored Service: monitored_service.name
       Environment: environment_tag.name
@@ -293,7 +298,7 @@
       _type_hint: number
     - category: table_calculation
       expression: "${total_insight_mttr_calculation}/${sum_of_insight_resolved}"
-      label: Insight MTTR
+      label: MTTR (Days)
       value_format:
       value_format_name: decimal_2
       _kind_hint: measure
@@ -432,26 +437,28 @@
     model: metrics_looker
     explore: insight_occurrence_metric
     type: looker_area
-    fields: [sum_of_insight_open, sum_of_insight_resolved, insight_occurrence_metric.insight_period_date]
-    fill_fields: [insight_occurrence_metric.insight_period_date]
+    fields: [insight_occurrence_metric.insight_period_date, insight_occurrence_metric.occurrence_resolved,
+      insight_occurrence_metric.occurrence_open, sum_of_occurrence_resolved, sum_of_occurrence_open]
     sorts: [insight_occurrence_metric.insight_period_date desc]
     limit: 500
     column_limit: 50
     dynamic_fields:
-    - measure: sum_of_insight_open
-      based_on: insight_occurrence_metric.insight_open
+    - measure: sum_of_occurrence_resolved
+      based_on: insight_occurrence_metric.occurrence_resolved
       expression: ''
-      label: Sum of Insight Open
+      label: Sum of Occurrence Resolved
       type: sum
       _kind_hint: measure
       _type_hint: number
-    - measure: sum_of_insight_resolved
-      based_on: insight_occurrence_metric.insight_resolved
+    - measure: sum_of_occurrence_open
+      based_on: insight_occurrence_metric.occurrence_open
       expression: ''
-      label: Sum of Insight Resolved
+      label: Sum of Occurrence Open
       type: sum
       _kind_hint: measure
       _type_hint: number
+    filter_expression: "${insight_occurrence_metric.occurrence_open} > 0 OR \n${insight_occurrence_metric.occurrence_resolved}\
+      \ > 0"
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -479,10 +486,10 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
-    y_axes: [{label: AppOmni Insights Occurrences, orientation: left, series: [{axisId: sum_of_insight_open,
-            id: sum_of_insight_open, name: Sum of Insight Open}, {axisId: sum_of_insight_resolved,
-            id: sum_of_insight_resolved, name: Sum of Insight Resolved}], showLabels: true,
-        showValues: true, unpinAxis: true, tickDensity: default, tickDensityCustom: 5,
+    y_axes: [{label: AppOmni Insights Occurrences, orientation: left, series: [{axisId: sum_of_occurrence_resolved,
+            id: sum_of_occurrence_resolved, name: Sum of Occurrence Resolved}, {axisId: sum_of_occurrence_open,
+            id: sum_of_occurrence_open, name: Sum of Occurrence Open}], showLabels: true,
+        showValues: true, minValue: 1, unpinAxis: true, tickDensity: default, tickDensityCustom: 5,
         type: linear}]
     x_axis_zoom: true
     y_axis_zoom: true
@@ -491,12 +498,18 @@
       sum_of_insight_resolved: "#32D583"
       sum_of_insight_resolved - 1 - count: "#32D583"
       sum_of_insight_open - 0 - count: "#F04438"
+      sum_of_occurrence_open: "#F04438"
+      sum_of_occurrence_resolved: "#32D583"
     series_labels:
       sum_of_insight_open: Open
       sum_of_insight_resolved: Resolved
       sum_of_insight_resolved - 1 - count: Resolved
       sum_of_insight_open - 0 - count: Open
+      sum_of_occurrence_resolved: Resolved
+      sum_of_occurrence_open: Open
     defaults_version: 1
+    hidden_pivots: {}
+    hidden_fields: [insight_occurrence_metric.occurrence_resolved, insight_occurrence_metric.occurrence_open]
     listen:
       Monitored Service: monitored_service.name
       Environment: environment_tag.name
@@ -540,7 +553,6 @@
       _kind_hint: measure
       table_calculation: count
       _type_hint: number
-    hidden_fields: [sum_of_occurrence_resolved]
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -595,7 +607,6 @@
     show_null_points: true
     interpolation: linear
     defaults_version: 1
-    hidden_fields: [sum_of_occurrence_resolved]
     listen:
       Monitored Service: monitored_service.name
       Environment: environment_tag.name
@@ -648,7 +659,7 @@
       _type_hint: number
     - category: table_calculation
       expression: "${total_occurrence_mttr_calculation}/${sum_of_occurrence_resolved}"
-      label: 'Occurrence MTTR '
+      label: MTTR (Days)
       value_format:
       value_format_name: decimal_2
       _kind_hint: measure
