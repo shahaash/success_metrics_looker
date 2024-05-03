@@ -1,4 +1,3 @@
-
 - dashboard: looker_policies_dashboard
   title: Looker Policies Dashboard
   layout: newspaper
