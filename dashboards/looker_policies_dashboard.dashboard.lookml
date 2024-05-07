@@ -19,27 +19,33 @@
     model: metrics_looker
     explore: policy_violation_metric
     type: 2059_dvd_rental::Stat Card
-    fields: [policy_violation_metric.risk_level_order, policy_violation_metric.count]
+    fields: [policy_violation_metric.risk_level_order, sum_of_policy_resolved]
     fill_fields: [policy_violation_metric.risk_level_order]
-    filters:
-      policy_violation_metric.status: resolved
     sorts: [policy_violation_metric.risk_level_order]
     limit: 500
     column_limit: 50
     dynamic_fields:
     - category: table_calculation
-      expression: coalesce(${policy_violation_metric.count}, 0)
+      expression: coalesce(${sum_of_policy_resolved}, 0)
       label: Count
       value_format:
       value_format_name:
       _kind_hint: measure
       table_calculation: count
       _type_hint: number
-    hidden_fields: [policy_violation_metric.count]
+    - measure: sum_of_policy_resolved
+      based_on: policy_violation_metric.policy_resolved
+      expression: ''
+      label: Sum of Policy Resolved
+      type: sum
+      _kind_hint: measure
+      _type_hint: number
+    hidden_fields: [sum_of_policy_resolved]
     hidden_points_if_no: []
     series_labels: {}
-    show_view_names: true
+    show_view_names: false
     defaults_version: 0
+    hidden_pivots: {}
     listen:
       Risk: policy_violation_metric.risk_level
       Date: policy_violation_metric.period_time_date
@@ -59,17 +65,16 @@
     model: metrics_looker
     explore: policy_violation_metric
     type: looker_area
-    fields: [policy_violation_metric.policy_period_date, policy_violation_metric.policy_resolved,
-      policy_violation_metric.policy_open, sum_of_policy_resolved, sum_of_policy_open]
+    fields: [policy_violation_metric.policy_period_date, sum_of_policy_total_resolved, sum_of_policy_open]
     filters: {}
     sorts: [policy_violation_metric.policy_period_date desc]
     limit: 500
     column_limit: 50
     dynamic_fields:
-    - measure: sum_of_policy_resolved
-      based_on: policy_violation_metric.policy_resolved
+    - measure: sum_of_policy_total_resolved
+      based_on: policy_violation_metric.policy_total_resolved
       expression: ''
-      label: Sum of Policy Resolved
+      label: Sum of Policy Total Resolved
       type: sum
       _kind_hint: measure
       _type_hint: number
@@ -80,8 +85,6 @@
       type: sum
       _kind_hint: measure
       _type_hint: number
-    filter_expression: "${policy_violation_metric.policy_open}>0 OR ${policy_violation_metric.policy_resolved}\
-      \ > 0"
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -104,36 +107,38 @@
     label_density: 25
     x_axis_scale: auto
     y_axis_combined: true
-    show_null_points: true
+    show_null_points: false
     interpolation: linear
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
-    y_axes: [{label: Policy Issues, orientation: left, series: [{axisId: resolved
-              - 1 - count, id: resolved - 1 - count, name: Resolved}], showLabels: true,
-        showValues: true, minValue: 1, unpinAxis: true, tickDensity: default, tickDensityCustom: 5,
+    y_axes: [{label: Policy Issues, orientation: left, series: [{axisId: sum_of_policy_total_resolved_calculation,
+            id: sum_of_policy_total_resolved_calculation, name: Resolved}, {axisId: sum_of_policy_open_calculation,
+            id: sum_of_policy_open_calculation, name: Open}], showLabels: true, showValues: true,
+        minValue: !!null '', unpinAxis: true, tickDensity: default, tickDensityCustom: 5,
         type: linear}]
     x_axis_zoom: true
     y_axis_zoom: true
     series_colors:
-      sum_of_policy_resolved: "#32D583"
+      sum_of_policy_total_resolved: "#32D583"
       sum_of_policy_open: "#F04438"
     series_labels:
-      sum_of_policy_resolved: Resolved
+      sum_of_policy_total_resolved: Resolved
       sum_of_policy_open: Open
-    hidden_fields: [policy_violation_metric.policy_resolved, policy_violation_metric.policy_open]
+    hidden_fields:
     hidden_pivots: {}
     defaults_version: 1
+    hidden_points_if_no: []
     listen:
-      Risk: policy_violation_metric.risk_level
-      Date: policy_violation_metric.period_time_date
+      Policy Name: policy.name
       Monitored Service: monitored_service.name
+      Service Type: monitored_service_type.name
+      Policy Type: policy.type
       Environment: environment_tag.name
       Tags: general_tag.name
-      Service Type: monitored_service_type.name
-      Policy Name: policy.name
-      Policy Type: policy.type
       Compliance Framework: compliance_framework.name
+      Risk: policy_violation_metric.risk_level
+      Date: policy_violation_metric.period_time_date
     row: 4
     col: 0
     width: 8
@@ -143,24 +148,28 @@
     model: metrics_looker
     explore: policy_violation_metric
     type: looker_column
-    fields: [policy_violation_metric.count, policy_violation_metric.policy_period_date,
-      policy_violation_metric.risk_level_order]
+    fields: [policy_violation_metric.policy_period_date, policy_violation_metric.risk_level_order, sum_of_policy_resolved]
     pivots: [policy_violation_metric.risk_level_order]
     fill_fields: [policy_violation_metric.risk_level_order]
-    filters:
-      policy_violation_metric.status: resolved
     sorts: [policy_violation_metric.risk_level_order, policy_violation_metric.policy_period_date
         desc]
     limit: 500
     column_limit: 50
     dynamic_fields:
     - category: table_calculation
-      expression: coalesce(${policy_violation_metric.count}, 0)
+      expression: coalesce(${sum_of_policy_resolved}, 0)
       label: Count
       value_format:
       value_format_name:
       _kind_hint: measure
       table_calculation: count
+      _type_hint: number
+    - measure: sum_of_policy_resolved
+      based_on: policy_violation_metric.policy_resolved
+      expression: ''
+      label: Sum of Policy Resolved
+      type: sum
+      _kind_hint: measure
       _type_hint: number
     x_axis_gridlines: false
     y_axis_gridlines: true
@@ -189,18 +198,18 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
-    hidden_fields: [policy_violation_metric.count]
-    y_axes: [{label: Policy Issues by Risk Level, orientation: left, series: [{axisId: 1
-              - 0 - policy_violation_metric.count, id: 1 - 0 - policy_violation_metric.count,
-            name: Critical}, {axisId: 2 - 1 - policy_violation_metric.count, id: 2
-              - 1 - policy_violation_metric.count, name: High}, {axisId: 3 - 2 - policy_violation_metric.count,
-            id: 3 - 2 - policy_violation_metric.count, name: Medium}, {axisId: 4 -
-              3 - policy_violation_metric.count, id: 4 - 3 - policy_violation_metric.count,
-            name: Low}, {axisId: 5 - 4 - policy_violation_metric.count, id: 5 - 4
-              - policy_violation_metric.count, name: Informational}, {axisId: Unknown
-              - 5 - policy_violation_metric.count, id: Unknown - 5 - policy_violation_metric.count,
-            name: Unknown}], showLabels: true, showValues: true, minValue: !!null '',
-        unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
+    hidden_fields: [sum_of_policy_resolved]
+    y_axes: [{label: Policy Issues, orientation: left, series: [{axisId: 1 - 0 - policy_violation_metric.count,
+            id: 1 - 0 - policy_violation_metric.count, name: Critical}, {axisId: 2
+              - 1 - policy_violation_metric.count, id: 2 - 1 - policy_violation_metric.count,
+            name: High}, {axisId: 3 - 2 - policy_violation_metric.count, id: 3 - 2
+              - policy_violation_metric.count, name: Medium}, {axisId: 4 - 3 - policy_violation_metric.count,
+            id: 4 - 3 - policy_violation_metric.count, name: Low}, {axisId: 5 - 4
+              - policy_violation_metric.count, id: 5 - 4 - policy_violation_metric.count,
+            name: Informational}, {axisId: Unknown - 5 - policy_violation_metric.count,
+            id: Unknown - 5 - policy_violation_metric.count, name: Unknown}], showLabels: true,
+        showValues: true, minValue: !!null '', unpinAxis: false, tickDensity: default,
+        tickDensityCustom: 5, type: linear}]
     x_axis_zoom: true
     y_axis_zoom: true
     series_colors:
@@ -214,15 +223,15 @@
     defaults_version: 1
     hidden_pivots: {}
     listen:
-      Risk: policy_violation_metric.risk_level
-      Date: policy_violation_metric.period_time_date
+      Policy Name: policy.name
       Monitored Service: monitored_service.name
+      Service Type: monitored_service_type.name
+      Policy Type: policy.type
       Environment: environment_tag.name
       Tags: general_tag.name
-      Service Type: monitored_service_type.name
-      Policy Name: policy.name
-      Policy Type: policy.type
       Compliance Framework: compliance_framework.name
+      Risk: policy_violation_metric.risk_level
+      Date: policy_violation_metric.period_time_date
     row: 4
     col: 8
     width: 8
@@ -233,9 +242,8 @@
     explore: policy_violation_metric
     type: looker_line
     fields: [policy_violation_metric.policy_period_date, total_policy_mttr_calculation,
-      sum_of_policy_resolved, policy_violation_metric.policy_resolved]
-    filters:
-      policy_violation_metric.policy_resolved: ">0"
+      sum_of_policy_resolved]
+    filters: {}
     sorts: [policy_violation_metric.policy_period_date desc]
     limit: 500
     column_limit: 50
@@ -297,24 +305,27 @@
     y_axis_combined: true
     show_null_points: true
     interpolation: linear
+    y_axes: [{label: '', orientation: left, series: [{axisId: policy_mttr, id: policy_mttr,
+            name: MTTR (Days)}], showLabels: true, showValues: true, unpinAxis: true,
+        tickDensity: default, tickDensityCustom: 5, type: linear}]
     x_axis_zoom: true
     y_axis_zoom: true
-    series_colors:
     trend_lines: [{color: "#b8b8b8", label_position: right, order: 3, period: 7, regression_type: linear,
         series_index: 1, show_label: false}]
     defaults_version: 1
-    hidden_fields: [policy_violation_metric.policy_resolved, total_policy_mttr_calculation,
-      sum_of_policy_resolved]
+    hidden_fields: [total_policy_mttr_calculation, sum_of_policy_resolved]
+    hidden_points_if_no: []
+    hidden_pivots: {}
     listen:
-      Risk: policy_violation_metric.risk_level
-      Date: policy_violation_metric.period_time_date
+      Policy Name: policy.name
       Monitored Service: monitored_service.name
+      Service Type: monitored_service_type.name
+      Policy Type: policy.type
       Environment: environment_tag.name
       Tags: general_tag.name
-      Service Type: monitored_service_type.name
-      Policy Name: policy.name
-      Policy Type: policy.type
       Compliance Framework: compliance_framework.name
+      Risk: policy_violation_metric.risk_level
+      Date: policy_violation_metric.period_time_date
     row: 4
     col: 16
     width: 8
@@ -354,12 +365,11 @@
       _kind_hint: measure
       table_calculation: count
       _type_hint: number
-      is_disabled: false
     hidden_fields: [sum_of_violation_resolved]
     hidden_points_if_no: []
-    series_labels: {}
-    show_view_names: true
     hidden_pivots: {}
+    series_labels: {}
+    show_view_names: false
     defaults_version: 0
     listen:
       Risk: policy_violation_metric.risk_level
@@ -380,8 +390,8 @@
     model: metrics_looker
     explore: policy_violation_metric
     type: looker_area
-    fields: [policy_violation_metric.policy_period_date, policy_violation_metric.violation_resolved,
-      policy_violation_metric.violation_open, sum_of_violation_resolved, sum_of_violation_open]
+    fields: [policy_violation_metric.policy_period_date, sum_of_violation_total_resolved, sum_of_violation_open]
+    filters: {}
     sorts: [policy_violation_metric.policy_period_date desc]
     limit: 500
     column_limit: 50
@@ -393,15 +403,13 @@
       type: sum
       _kind_hint: measure
       _type_hint: number
-    - measure: sum_of_violation_resolved
-      based_on: policy_violation_metric.violation_resolved
+    - measure: sum_of_violation_total_resolved
+      based_on: policy_violation_metric.violation_total_resolved
       expression: ''
-      label: Sum of Violation Resolved
+      label: Sum of Violation Total Resolved
       type: sum
       _kind_hint: measure
       _type_hint: number
-    filter_expression: "${policy_violation_metric.violation_open} > 0 OR ${policy_violation_metric.violation_resolved}\
-      \ > 0"
     x_axis_gridlines: false
     y_axis_gridlines: true
     show_view_names: false
@@ -424,37 +432,39 @@
     label_density: 25
     x_axis_scale: auto
     y_axis_combined: true
-    show_null_points: true
+    show_null_points: false
     interpolation: linear
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
-    y_axes: [{label: Policy Issue Violations, orientation: left, series: [{axisId: sum_of_violation_resolved,
-            id: sum_of_violation_resolved, name: Resolved}, {axisId: sum_of_violation_open,
-            id: sum_of_violation_open, name: Open}], showLabels: true, showValues: true,
-        minValue: 1, unpinAxis: true, tickDensity: default, tickDensityCustom: 5,
-        type: linear}]
+    y_axes: [{label: Policy Issue Violations, orientation: left, series: [{axisId: sum_of_violation_total_resolved_calculation,
+            id: sum_of_violation_total_resolved_calculation, name: Resolved}, {axisId: sum_of_violation_open_calculation,
+            id: sum_of_violation_open_calculation, name: Open}], showLabels: true,
+        showValues: true, minValue: !!null '', unpinAxis: true, tickDensity: default,
+        tickDensityCustom: 5, type: linear}]
     x_axis_label: ''
     x_axis_zoom: true
     y_axis_zoom: true
     series_colors:
-      sum_of_violation_resolved: "#32D583"
+      sum_of_violation_total_resolved: "#32D583"
       sum_of_violation_open: "#F04438"
     series_labels:
+      sum_of_violation_total_resolved: Resolved
       sum_of_violation_open: Open
-      sum_of_violation_resolved: Resolved
-    hidden_fields: [policy_violation_metric.violation_open, policy_violation_metric.violation_resolved]
+    hidden_fields:
     defaults_version: 1
+    hidden_points_if_no: []
+    hidden_pivots: {}
     listen:
-      Risk: policy_violation_metric.risk_level
-      Date: policy_violation_metric.period_time_date
+      Policy Name: policy.name
       Monitored Service: monitored_service.name
+      Service Type: monitored_service_type.name
+      Policy Type: policy.type
       Environment: environment_tag.name
       Tags: general_tag.name
-      Service Type: monitored_service_type.name
-      Policy Name: policy.name
-      Policy Type: policy.type
       Compliance Framework: compliance_framework.name
+      Risk: policy_violation_metric.risk_level
+      Date: policy_violation_metric.period_time_date
     row: 14
     col: 0
     width: 8
@@ -467,9 +477,7 @@
     fields: [policy_violation_metric.risk_level_order, policy_violation_metric.policy_period_date,
       sum_of_violation_resolved]
     pivots: [policy_violation_metric.risk_level_order]
-    fill_fields: [policy_violation_metric.risk_level_order, policy_violation_metric.policy_period_date]
-    filters:
-      policy_violation_metric.status: resolved
+    fill_fields: [policy_violation_metric.risk_level_order]
     sorts: [policy_violation_metric.risk_level_order, policy_violation_metric.policy_period_date
         desc]
     limit: 500
@@ -518,16 +526,23 @@
     show_totals_labels: false
     show_silhouette: false
     totals_color: "#808080"
-    y_axes: [{label: '', orientation: left, series: [{axisId: Critical - 0 - count,
-            id: Critical - 0 - count, name: Critical}, {axisId: High - 1 - count,
-            id: High - 1 - count, name: High}, {axisId: Medium - 2 - count, id: Medium
-              - 2 - count, name: Medium}, {axisId: Low - 3 - count, id: Low - 3 -
-              count, name: Low}, {axisId: Informational - 4 - count, id: Informational
+    y_axes: [{label: Policy Issue Violations, orientation: left, series: [{axisId: Critical
+              - 0 - count, id: Critical - 0 - count, name: Critical}, {axisId: High
+              - 1 - count, id: High - 1 - count, name: High}, {axisId: Medium - 2
+              - count, id: Medium - 2 - count, name: Medium}, {axisId: Low - 3 - count,
+            id: Low - 3 - count, name: Low}, {axisId: Informational - 4 - count, id: Informational
               - 4 - count, name: Informational}, {axisId: Unknown - 5 - count, id: Unknown
               - 5 - count, name: Unknown}], showLabels: true, showValues: true, minValue: !!null '',
         unpinAxis: false, tickDensity: default, tickDensityCustom: 5, type: linear}]
     x_axis_zoom: true
     y_axis_zoom: true
+    series_colors:
+      Critical - 0 - count: "#A50000"
+      High - 1 - count: "#F04438"
+      Medium - 2 - count: "#F79009"
+      Low - 3 - count: "#FEC84B"
+      Informational - 4 - count: "#84CAFF"
+      Unknown - 5 - count: "#D2D6DB"
     column_group_spacing_ratio: 0.4
     hidden_pivots: {}
     hidden_fields: [sum_of_violation_resolved]
@@ -552,9 +567,7 @@
     explore: policy_violation_metric
     type: looker_line
     fields: [policy_violation_metric.policy_period_date, total_policy_violations_mttr_calculation,
-      sum_of_violation_resolved, policy_violation_metric.violation_resolved]
-    filters:
-      policy_violation_metric.violation_resolved: ">0"
+      sum_of_violation_resolved]
     sorts: [policy_violation_metric.policy_period_date desc]
     limit: 500
     column_limit: 50
@@ -590,7 +603,7 @@
       value_format:
       value_format_name: decimal_2
       _kind_hint: measure
-      table_calculation: mttr_days
+      table_calculation: violation_mttr
       _type_hint: number
     x_axis_gridlines: false
     y_axis_gridlines: true
@@ -614,15 +627,20 @@
     label_density: 25
     x_axis_scale: auto
     y_axis_combined: true
-    show_null_points: true
+    show_null_points: false
     interpolation: linear
+    y_axes: [{label: '', orientation: left, series: [{axisId: policy_issue_violations_mttr,
+            id: policy_issue_violations_mttr, name: MTTR (Days)}], showLabels: true,
+        showValues: true, unpinAxis: true, tickDensity: default, tickDensityCustom: 5,
+        type: linear}]
     x_axis_zoom: true
     y_axis_zoom: true
     trend_lines: [{color: "#b8b8b8", label_position: right, order: 3, period: 7, regression_type: linear,
         series_index: 1, show_label: false}]
     defaults_version: 1
-    hidden_fields: [policy_violation_metric.violation_resolved, total_policy_violations_mttr_calculation,
-      sum_of_violation_resolved]
+    hidden_fields: [total_policy_violations_mttr_calculation, sum_of_violation_resolved]
+    hidden_points_if_no: []
+    hidden_pivots: {}
     listen:
       Risk: policy_violation_metric.risk_level
       Date: policy_violation_metric.period_time_date
@@ -674,6 +692,7 @@
     ui_config:
       type: tag_list
       display: popover
+      options: []
     model: metrics_looker
     explore: monitored_service
     listens_to_filters: [Service Type]
@@ -687,6 +706,7 @@
     ui_config:
       type: tag_list
       display: popover
+      options: []
     model: metrics_looker
     explore: environment_tag
     listens_to_filters: []
@@ -700,6 +720,7 @@
     ui_config:
       type: tag_list
       display: popover
+      options: []
     model: metrics_looker
     explore: general_tag
     listens_to_filters: []
@@ -726,6 +747,7 @@
     ui_config:
       type: tag_list
       display: overflow
+      options: []
     model: metrics_looker
     explore: policy
     listens_to_filters: []
@@ -739,6 +761,7 @@
     ui_config:
       type: tag_list
       display: overflow
+      options: []
     model: metrics_looker
     explore: policy
     listens_to_filters: []
