@@ -26,19 +26,19 @@ view: policy {
   }
   measure: count {
     type: count
-    # drill_fields: [detail*]
+    drill_fields: [detail*]
   }
 
-  # # ----- Sets of fields for drilling ------
-  # set: detail {
-  #   fields: [
-  #     id,
-  #     name,
-  #     monitored_service.name,
-  #     monitored_service.id,
-  #     policy_violation_metric.count,
-  #     preview_ruleevent_summary.count
-  #   ]
-  # }
+  # ----- Sets of fields for drilling ------
+  set: detail {
+    fields: [
+      id,
+      name,
+      monitored_service.name,
+      monitored_service.id,
+      policy_violation_metric.count,
+      preview_ruleevent_summary.count
+    ]
+  }
 
 }
