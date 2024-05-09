@@ -14,52 +14,52 @@
     col: 0
     width: 24
     height: 2
-  - title: Total Policy Issues Resolved
-    name: Total Policy Issues Resolved
-    model: metrics_looker
-    explore: policy_violation_metric
-    type: 2059_dvd_rental::Stat Card
-    fields: [policy_violation_metric.risk_level_order, sum_of_policy_resolved]
-    fill_fields: [policy_violation_metric.risk_level_order]
-    sorts: [policy_violation_metric.risk_level_order]
-    limit: 500
-    column_limit: 50
-    dynamic_fields:
-    - category: table_calculation
-      expression: coalesce(${sum_of_policy_resolved}, 0)
-      label: Count
-      value_format:
-      value_format_name:
-      _kind_hint: measure
-      table_calculation: count
-      _type_hint: number
-    - measure: sum_of_policy_resolved
-      based_on: policy_violation_metric.policy_resolved
-      expression: ''
-      label: Sum of Policy Resolved
-      type: sum
-      _kind_hint: measure
-      _type_hint: number
-    hidden_fields: [sum_of_policy_resolved]
-    hidden_points_if_no: []
-    series_labels: {}
-    show_view_names: false
-    defaults_version: 0
-    hidden_pivots: {}
-    listen:
-      Risk: policy_violation_metric.risk_level
-      Date: policy_violation_metric.period_time_date
-      Monitored Service: monitored_service.name
-      Environment: environment_tag.name
-      Tags: general_tag.name
-      Service Type: monitored_service_type.name
-      Policy Name: policy.name
-      Policy Type: policy.type
-      Compliance Framework: compliance_framework.name
-    row: 2
-    col: 0
-    width: 24
-    height: 2
+  # - title: Total Policy Issues Resolved
+  #   name: Total Policy Issues Resolved
+  #   model: metrics_looker
+  #   explore: policy_violation_metric
+  #   type: 2059_dvd_rental::Stat Card
+  #   fields: [policy_violation_metric.risk_level_order, sum_of_policy_resolved]
+  #   fill_fields: [policy_violation_metric.risk_level_order]
+  #   sorts: [policy_violation_metric.risk_level_order]
+  #   limit: 500
+  #   column_limit: 50
+  #   dynamic_fields:
+  #   - category: table_calculation
+  #     expression: coalesce(${sum_of_policy_resolved}, 0)
+  #     label: Count
+  #     value_format:
+  #     value_format_name:
+  #     _kind_hint: measure
+  #     table_calculation: count
+  #     _type_hint: number
+  #   - measure: sum_of_policy_resolved
+  #     based_on: policy_violation_metric.policy_resolved
+  #     expression: ''
+  #     label: Sum of Policy Resolved
+  #     type: sum
+  #     _kind_hint: measure
+  #     _type_hint: number
+  #   hidden_fields: [sum_of_policy_resolved]
+  #   hidden_points_if_no: []
+  #   series_labels: {}
+  #   show_view_names: false
+  #   defaults_version: 0
+  #   hidden_pivots: {}
+  #   listen:
+  #     Risk: policy_violation_metric.risk_level
+  #     Date: policy_violation_metric.period_time_date
+  #     Monitored Service: monitored_service.name
+  #     Environment: environment_tag.name
+  #     Tags: general_tag.name
+  #     Service Type: monitored_service_type.name
+  #     Policy Name: policy.name
+  #     Policy Type: policy.type
+  #     Compliance Framework: compliance_framework.name
+  #   row: 2
+  #   col: 0
+  #   width: 24
+  #   height: 2
   - title: Open vs. Resolved Policy Issues
     name: Open vs Resolved Policy Issues
     model: metrics_looker
