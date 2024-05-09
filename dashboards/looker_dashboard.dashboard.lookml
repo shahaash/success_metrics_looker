@@ -5,15 +5,15 @@
   description: ''
   preferred_slug: 8cY8JzotzzTeiZCy2pBjCc
   elements:
-  # - name: ''
-  #   type: text
-  #   title_text: ''
-  #   body_text: <h4 style="font-size:22px; margin-top:30px; font-style:normal">Policy
-  #     Issues</h4>
-  #   row: 0
-  #   col: 0
-  #   width: 24
-  #   height: 2
+  - name: ''
+    type: text
+    title_text: ''
+    body_text: <h4 style="font-size:22px; margin-top:30px; font-style:normal">Policy
+      Issues</h4>
+    row: 0
+    col: 0
+    width: 24
+    height: 2
   - title: Total Policy Issues Resolved
     name: Total Policy Issues Resolved
     model: metrics_looker
