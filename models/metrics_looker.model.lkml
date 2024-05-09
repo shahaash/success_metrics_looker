@@ -6,7 +6,7 @@ include: "/dashboards/looker_insights_dashboard.dashboard.lookml"
 include: "/dashboards/looker_policies_dashboard.dashboard.lookml"
 
 datagroup: metrics_looker_default_datagroup {
-  max_cache_age: "1 hour"
+  max_cache_age: "10 hour"
 }
 week_start_day: sunday
 persist_with: metrics_looker_default_datagroup
