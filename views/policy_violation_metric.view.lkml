@@ -16,6 +16,27 @@ view: policy_violation_metric {
     timeframes: [raw, time, date, week, month, quarter, year]
     sql: ${TABLE}."created" ;;
   }
+  dimension: item_mttr {
+    type: string
+    sql: ${TABLE}."item_mttr" ;;
+  }
+  dimension: item_mttr_float {
+    type: number
+    sql: ${TABLE}."item_mttr_float" ;;
+  }
+  dimension: items_open {
+    type: number
+    sql: ${TABLE}."items_open" ;;
+  }
+  dimension: items_resolved {
+    type: number
+    sql: ${TABLE}."items_resolved" ;;
+  }
+  dimension_group: last_opened {
+    type: time
+    timeframes: [raw, time, date, week, month, quarter, year]
+    sql: ${TABLE}."last_opened" ;;
+  }
   dimension_group: modified {
     type: time
     timeframes: [raw, time, date, week, month, quarter, year, hour]
@@ -26,8 +47,20 @@ view: policy_violation_metric {
     sql: ${TABLE}."monitored_service_id" ;;
   }
   dimension: monitored_service_type {
-    type: number
+    type: string
     sql: ${TABLE}."monitored_service_type" ;;
+  }
+  dimension: mttr {
+    type: string
+    sql: ${TABLE}."mttr" ;;
+  }
+  dimension: mttr_float {
+    type: number
+    sql: ${TABLE}."mttr_float" ;;
+  }
+  dimension: org_uuid {
+    type: string
+    sql: ${TABLE}."org_uuid" ;;
   }
   dimension: period {
     type: string
@@ -51,29 +84,8 @@ view: policy_violation_metric {
     type: number
     sql: ${TABLE}."policy_id" ;;
   }
-  dimension_group: policy_last_opened {
-    type: time
-    timeframes: [raw, time, date, week, month, quarter, year]
-    sql: ${TABLE}."policy_last_opened" ;;
-  }
-  dimension: policy_mttr {
-    type: number
-    sql: ${TABLE}."policy_mttr" ;;
-  }
-  dimension: policy_open {
-    type: number
-    sql: ${TABLE}."policy_open" ;;
-  }
-  dimension: policy_resolved {
-    type: number
-    sql: ${TABLE}."policy_resolved" ;;
-  }
-  dimension: policy_total_resolved {
-    type: number
-    sql: ${TABLE}."policy_total_resolved" ;;
-  }
   dimension: policy_type {
-    type: number
+    type: string
     sql: ${TABLE}."policy_type" ;;
   }
   dimension: risk_score {
@@ -141,48 +153,32 @@ view: policy_violation_metric {
     sql: ${TABLE}."rule_id" ;;
   }
   dimension: rule_type {
-    type: number
+    type: string
     sql: ${TABLE}."rule_type" ;;
   }
   dimension: status {
     type: string
     sql: ${TABLE}."status" ;;
   }
-  dimension: status_level {
-    case: {
-      when: {
-        sql: ${TABLE}."status" = 'open' ;;
-        label: "open"
-      }
-      when: {
-        sql: ${TABLE}."status" = 'resolved' ;;
-        label: "resolved"
-      }
-    }
+  dimension: times_opened {
+    type: number
+    sql: ${TABLE}."times_opened" ;;
   }
-  dimension: tenant_key {
+  dimension: times_resolved {
+    type: number
+    sql: ${TABLE}."times_resolved" ;;
+  }
+  dimension: total_items_resolved {
+    type: number
+    sql: ${TABLE}."total_items_resolved" ;;
+  }
+  dimension: total_times_resolved {
+    type: number
+    sql: ${TABLE}."total_times_resolved" ;;
+  }
+  dimension: unresolved_time {
     type: string
-    sql: ${TABLE}."tenant_key" ;;
-  }
-  dimension: violation_mttr {
-    type: number
-    sql: ${TABLE}."violation_mttr" ;;
-  }
-  dimension: violation_open {
-    type: number
-    sql: ${TABLE}."violation_open" ;;
-  }
-  dimension: violation_resolved {
-    type: number
-    sql: ${TABLE}."violation_resolved" ;;
-  }
-  dimension: violation_total_resolved {
-    type: number
-    sql: ${TABLE}."violation_total_resolved" ;;
-  }
-  dimension: violation_unresolved_time {
-    type: string
-    sql: ${TABLE}."violation_unresolved_time" ;;
+    sql: ${TABLE}."unresolved_time" ;;
   }
   measure: count {
     type: count

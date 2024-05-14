@@ -6,6 +6,7 @@ view: monitored_service_type {
     sql: ${TABLE}."monitored_service_type" ;;
   }
   dimension: name {
+    suggest_persist_for: "15 minutes"
     type: string
     sql: ${TABLE}."name" ;;
   }

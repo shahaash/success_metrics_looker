@@ -9,36 +9,24 @@ view: policy {
   }
   dimension: monitored_service_id {
     type: number
-    # hidden: yes
     sql: ${TABLE}."monitored_service_id" ;;
   }
   dimension: name {
+    suggest_persist_for: "15 minutes"
     type: string
     sql: ${TABLE}."name" ;;
   }
-  dimension: tenant_key {
+  dimension: org_uuid {
     type: string
-    sql: ${TABLE}."tenant_key" ;;
+    sql: ${TABLE}."org_uuid" ;;
   }
-  dimension: type {
+  dimension: policy_type {
+    suggest_persist_for: "15 minutes"
     type: string
-    sql: ${TABLE}."type" ;;
+    sql: ${TABLE}."policy_type" ;;
   }
   measure: count {
     type: count
-    drill_fields: [detail*]
+    drill_fields: [id, name]
   }
-
-  # ----- Sets of fields for drilling ------
-  set: detail {
-    fields: [
-      id,
-      name,
-      monitored_service.name,
-      monitored_service.id,
-      policy_violation_metric.count,
-      preview_ruleevent_summary.count
-    ]
-  }
-
 }

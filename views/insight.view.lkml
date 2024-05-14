@@ -7,16 +7,20 @@ view: insight {
     type: number
     sql: ${TABLE}."id" ;;
   }
+  dimension: monitored_service_id {
+    type: number
+    sql: ${TABLE}."monitored_service_id" ;;
+  }
   dimension: name {
     type: string
     sql: ${TABLE}."name" ;;
   }
-  dimension: tenant_key {
+  dimension: org_uuid {
     type: string
-    sql: ${TABLE}."tenant_key" ;;
+    sql: ${TABLE}."org_uuid" ;;
   }
   measure: count {
     type: count
-    drill_fields: [id, name, insight_occurrence_metric.count]
+    drill_fields: [id, name]
   }
 }

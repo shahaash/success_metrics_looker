@@ -8,15 +8,16 @@ view: environment_tag {
     sql: ${TABLE}."id" ;;
   }
   dimension: name {
+    suggest_persist_for: "15 minutes"
     type: string
     sql: ${TABLE}."name" ;;
   }
-  dimension: tenant_key {
+  dimension: org_uuid {
     type: string
-    sql: ${TABLE}."tenant_key" ;;
+    sql: ${TABLE}."org_uuid" ;;
   }
   measure: count {
     type: count
-    drill_fields: [id, name, monitored_service_environment_tag.count]
+    drill_fields: [id, name]
   }
 }

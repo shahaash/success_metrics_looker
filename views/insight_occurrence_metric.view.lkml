@@ -11,10 +11,6 @@ view: insight_occurrence_metric {
     type: number
     sql: ${TABLE}."category_id" ;;
   }
-  dimension: compliance_id {
-    type: number
-    sql: ${TABLE}."compliance_id" ;;
-  }
   dimension_group: created {
     type: time
     timeframes: [raw, time, date, week, month, quarter, year]
@@ -24,30 +20,26 @@ view: insight_occurrence_metric {
     type: number
     sql: ${TABLE}."insight_id" ;;
   }
-  dimension_group: insight_last_opened {
+  dimension: item_mttr {
+    type: string
+    sql: ${TABLE}."item_mttr" ;;
+  }
+  dimension: item_mttr_float {
+    type: number
+    sql: ${TABLE}."item_mttr_float" ;;
+  }
+  dimension: items_open {
+    type: number
+    sql: ${TABLE}."items_open" ;;
+  }
+  dimension: items_resolved {
+    type: number
+    sql: ${TABLE}."items_resolved" ;;
+  }
+  dimension_group: last_opened {
     type: time
     timeframes: [raw, time, date, week, month, quarter, year]
-    sql: ${TABLE}."insight_last_opened" ;;
-  }
-  dimension: insight_mttr {
-    type: number
-    sql: ${TABLE}."insight_mttr" ;;
-  }
-  dimension: insight_open {
-    type: number
-    sql: ${TABLE}."insight_open" ;;
-  }
-  dimension: insight_resolved {
-    type: number
-    sql: ${TABLE}."insight_resolved" ;;
-  }
-  dimension: insight_total_resolved {
-    type: number
-    sql: ${TABLE}."insight_total_resolved" ;;
-  }
-  dimension: occurrence_total_resolved {
-    type: number
-    sql: ${TABLE}."occurrence_total_resolved" ;;
+    sql: ${TABLE}."last_opened" ;;
   }
   dimension_group: modified {
     type: time
@@ -59,24 +51,20 @@ view: insight_occurrence_metric {
     sql: ${TABLE}."monitored_service_id" ;;
   }
   dimension: monitored_service_type {
-    type: number
+    type: string
     sql: ${TABLE}."monitored_service_type" ;;
   }
-  dimension: occurrence_mttr {
-    type: number
-    sql: ${TABLE}."occurrence_mttr" ;;
-  }
-  dimension: occurrence_open {
-    type: number
-    sql: ${TABLE}."occurrence_open" ;;
-  }
-  dimension: occurrence_resolved {
-    type: number
-    sql: ${TABLE}."occurrence_resolved" ;;
-  }
-  dimension: occurrence_unresolved_time {
+  dimension: mttr {
     type: string
-    sql: ${TABLE}."occurrence_unresolved_time" ;;
+    sql: ${TABLE}."mttr" ;;
+  }
+  dimension: mttr_float {
+    type: number
+    sql: ${TABLE}."mttr_float" ;;
+  }
+  dimension: org_uuid {
+    type: string
+    sql: ${TABLE}."org_uuid" ;;
   }
   dimension: period {
     type: string
@@ -86,7 +74,6 @@ view: insight_occurrence_metric {
     type: number
     sql: ${TABLE}."period_value" ;;
   }
-
   dimension_group: period_time {
     type: time
     timeframes: [raw, time, date, week, month, quarter, year, hour]
@@ -161,27 +148,30 @@ view: insight_occurrence_metric {
     type: string
     sql: ${TABLE}."status" ;;
   }
-  dimension: status_level {
-    case: {
-      when: {
-        sql: ${TABLE}."status" = 'open' ;;
-        label: "open"
-      }
-      when: {
-        sql: ${TABLE}."status" = 'resolved' ;;
-        label: "resolved"
-      }
-    }
+  dimension: times_opened {
+    type: number
+    sql: ${TABLE}."times_opened" ;;
   }
-  dimension: tenant_key {
+  dimension: times_resolved {
+    type: number
+    sql: ${TABLE}."times_resolved" ;;
+  }
+  dimension: total_items_resolved {
+    type: number
+    sql: ${TABLE}."total_items_resolved" ;;
+  }
+  dimension: total_times_resolved {
+    type: number
+    sql: ${TABLE}."total_times_resolved" ;;
+  }
+  dimension: unresolved_time {
     type: string
-    sql: ${TABLE}."tenant_key" ;;
+    sql: ${TABLE}."unresolved_time" ;;
   }
   measure: count {
     type: count
     drill_fields: [id]
   }
-
   dimension: end_selected_period_time {
     type: date
     sql: {% date_end period_time_date %};;

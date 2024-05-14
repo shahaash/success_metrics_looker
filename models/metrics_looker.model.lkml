@@ -5,33 +5,33 @@ include: "/dashboards/looker_dashboard.dashboard.lookml"
 include: "/dashboards/looker_insights_dashboard.dashboard.lookml"
 include: "/dashboards/looker_policies_dashboard.dashboard.lookml"
 
-datagroup: metrics_looker_default_datagroup {
-  max_cache_age: "10 hour"
+datagroup: success_metrics_looker_default_datagroup {
+  max_cache_age: "15 minutes"
 }
 week_start_day: sunday
-persist_with: metrics_looker_default_datagroup
+persist_with: success_metrics_looker_default_datagroup
 
 explore: environment_tag {
   sql_always_where: {% if _user_attributes['appomni_env_restricted'] == "True" %}
                       ${environment_tag.id} IN ({{ _user_attributes['appomni_allowed_envs']}})
                     {% endif %};;
   access_filter: {
-    field: environment_tag.tenant_key
-    user_attribute: appomni_org_key
+    field: environment_tag.org_uuid
+    user_attribute: appomni_org_uuid
   }
 }
 
 explore: general_tag {
   access_filter: {
-    field: general_tag.tenant_key
-    user_attribute: appomni_org_key
+    field: general_tag.org_uuid
+    user_attribute: appomni_org_uuid
   }
 }
 
 explore: policy {
   access_filter: {
-    field: policy.tenant_key
-    user_attribute: appomni_org_key
+    field: policy.org_uuid
+    user_attribute: appomni_org_uuid
   }
   access_filter: {
     field: policy.monitored_service_id
@@ -48,8 +48,8 @@ explore: monitored_service {
     relationship: many_to_one
   }
   access_filter: {
-    field: monitored_service.tenant_key
-    user_attribute: appomni_org_key
+    field: monitored_service.org_uuid
+    user_attribute: appomni_org_uuid
   }
   access_filter: {
     field: monitored_service.id
@@ -94,7 +94,7 @@ explore: policy_violation_metric {
   }
   join: monitored_service_type {
     type: inner
-    sql_on: ${monitored_service_type.monitored_service_type} = ${monitored_service.monitored_service_type} ;;
+    sql_on: ${monitored_service_type.monitored_service_type} = ${policy_violation_metric.monitored_service_type} ;;
     relationship: many_to_one
   }
   join: compliance_framework {
@@ -107,8 +107,8 @@ explore: policy_violation_metric {
                     {% endif %}
                     ${period} = ${period_range};;
   access_filter: {
-    field: policy_violation_metric.tenant_key
-    user_attribute: appomni_org_key
+    field: policy_violation_metric.org_uuid
+    user_attribute: appomni_org_uuid
   }
   access_filter: {
     field: policy_violation_metric.monitored_service_id
@@ -144,7 +144,7 @@ explore: insight_occurrence_metric {
   }
   join: monitored_service_type {
     type: inner
-    sql_on: ${monitored_service_type.monitored_service_type} = ${monitored_service.monitored_service_type} ;;
+    sql_on: ${monitored_service_type.monitored_service_type} = ${insight_occurrence_metric.monitored_service_type} ;;
     relationship: many_to_one
   }
   join: insight_category {
@@ -157,8 +157,8 @@ explore: insight_occurrence_metric {
                     {% endif %}
                     ${period} = ${period_range};;
   access_filter: {
-    field: insight_occurrence_metric.tenant_key
-    user_attribute: appomni_org_key
+    field: insight_occurrence_metric.org_uuid
+    user_attribute: appomni_org_uuid
   }
   access_filter: {
     field: insight_occurrence_metric.monitored_service_id

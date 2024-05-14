@@ -12,12 +12,13 @@ view: monitored_service {
     sql: ${TABLE}."monitored_service_type" ;;
   }
   dimension: name {
+    suggest_persist_for: "15 minutes"
     type: string
     sql: ${TABLE}."name" ;;
   }
-  dimension: tenant_key {
+  dimension: org_uuid {
     type: string
-    sql: ${TABLE}."tenant_key" ;;
+    sql: ${TABLE}."org_uuid" ;;
   }
   measure: count {
     type: count

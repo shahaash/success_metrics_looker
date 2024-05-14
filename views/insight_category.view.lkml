@@ -8,6 +8,7 @@ view: insight_category {
     sql: ${TABLE}."id" ;;
   }
   dimension: name {
+    suggest_persist_for: "15 minutes"
     type: string
     sql: ${TABLE}."name" ;;
   }
