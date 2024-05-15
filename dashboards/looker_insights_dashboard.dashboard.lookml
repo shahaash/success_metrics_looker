@@ -232,6 +232,8 @@
     type: looker_line
     fields: [insight_occurrence_metric.insight_period_date, total_insight_mttr_calculation,
       sum_of_insight_resolved]
+    filters:
+      sum_of_insight_resolved: ">0"
     sorts: [insight_occurrence_metric.insight_period_date desc]
     limit: 500
     column_limit: 50
@@ -542,6 +544,8 @@
     type: looker_line
     fields: [insight_occurrence_metric.insight_period_date, total_occurrence_mttr_calculation,
       sum_of_occurrence_resolved]
+    filters:
+      sum_of_occurrence_resolved: ">0"
     sorts: [insight_occurrence_metric.insight_period_date desc]
     limit: 500
     column_limit: 50

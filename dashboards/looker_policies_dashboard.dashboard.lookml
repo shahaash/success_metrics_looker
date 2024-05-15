@@ -237,7 +237,8 @@
     type: looker_line
     fields: [policy_violation_metric.policy_period_date, total_policy_mttr_calculation,
       sum_of_policy_resolved]
-    filters: {}
+    filters:
+      sum_of_policy_resolved: ">0"
     sorts: [policy_violation_metric.policy_period_date desc]
     limit: 500
     column_limit: 50
@@ -556,6 +557,8 @@
     type: looker_line
     fields: [policy_violation_metric.policy_period_date, total_violation_mttr_calculation,
       sum_of_violation_resolved]
+    filters:
+      sum_of_violation_resolved: ">0"
     sorts: [policy_violation_metric.policy_period_date desc]
     limit: 500
     column_limit: 50

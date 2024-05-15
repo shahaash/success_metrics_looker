@@ -239,7 +239,6 @@
       sum_of_policy_resolved]
     filters:
       sum_of_policy_resolved: ">0"
-    filters: {}
     sorts: [policy_violation_metric.policy_period_date desc]
     limit: 500
     column_limit: 50
