@@ -14,7 +14,7 @@
     col: 0
     width: 24
     height: 2
-  - title: Total Policy Issues Resolved
+  - title: Policy Issues Resolved
     name: Total Policy Issues Resolved
     model: test_look
     explore: policy_violation_metric
@@ -59,7 +59,7 @@
     col: 0
     width: 24
     height: 2
-  - title: Open vs. Resolved Policy Issues
+  - title: Open vs Resolved Policy Issues
     name: Open vs Resolved Policy Issues
     model: test_look
     explore: policy_violation_metric
@@ -140,8 +140,8 @@
     col: 0
     width: 8
     height: 6
-  - title: Policy Issues Resolved Over Time
-    name: Policy Issues Resolved Over Time
+  - title: Policy Issues Resolved
+    name: Policy Issues Resolved
     model: test_look
     explore: policy_violation_metric
     type: looker_column
